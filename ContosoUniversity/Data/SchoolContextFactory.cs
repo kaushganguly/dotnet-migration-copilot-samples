@@ -1,17 +1,26 @@
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace ContosoUniversity.Data
 {
-    public static class SchoolContextFactory
+    public sealed class SchoolContextFactory : IDesignTimeDbContextFactory<SchoolContext>
     {
-        public static SchoolContext Create()
+        public SchoolContext CreateDbContext(string[] args)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var optionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-            
-            return new SchoolContext(optionsBuilder.Options);
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("The DefaultConnection connection string is missing.");
+            var options = new DbContextOptionsBuilder<SchoolContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            return new SchoolContext(options);
         }
     }
 }
