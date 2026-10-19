@@ -38,7 +38,7 @@ This feature allows administrators to upload images for teaching materials (text
 ## Technical Details
 
 ### File Storage
-- Images are stored in `/Uploads/TeachingMaterials/` directory
+- Images are stored in `wwwroot/Uploads/TeachingMaterials/` and served from `/Uploads/TeachingMaterials/`
 - Filenames follow the pattern: `course_{CourseID}_{GUID}.{extension}`
 - Old images are automatically deleted when replaced
 - **Important**: Uploaded images are excluded from git repository via `.gitignore`
@@ -76,17 +76,14 @@ This feature allows administrators to upload images for teaching materials (text
 
 ### Configuration
 
-The following settings in `Web.config` control file upload limits:
-- `maxRequestLength="10240"` (10MB in KB)
-- `maxAllowedContentLength="10485760"` (10MB in bytes)
-- `executionTimeout="3600"` (1 hour timeout for large uploads)
+Upload format and per-file size limits are validated by the ASP.NET Core course controller. Configure request-body limits in the hosting server if they need to be changed.
 
 ## Deployment Considerations
 
 ### Initial Setup
 1. Ensure the `/Uploads/TeachingMaterials/` directory exists on the server
 2. Set appropriate write permissions for the application pool identity
-3. Verify the web.config upload limits are appropriate for your hosting environment
+3. Verify the hosting server request-body limit allows uploads up to the application's 5 MB per-file limit
 
 ### File System Permissions
 The application needs write access to the `/Uploads/TeachingMaterials/` directory:
