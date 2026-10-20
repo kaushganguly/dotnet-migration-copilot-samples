@@ -76,17 +76,14 @@ This feature allows administrators to upload images for teaching materials (text
 
 ### Configuration
 
-The following settings in `Web.config` control file upload limits:
-- `maxRequestLength="10240"` (10MB in KB)
-- `maxAllowedContentLength="10485760"` (10MB in bytes)
-- `executionTimeout="3600"` (1 hour timeout for large uploads)
+The application validates image uploads at 5MB. Configure request body limits in the ASP.NET Core host or reverse proxy to allow the upload and multipart request overhead.
 
 ## Deployment Considerations
 
 ### Initial Setup
 1. Ensure the `/Uploads/TeachingMaterials/` directory exists on the server
 2. Set appropriate write permissions for the application pool identity
-3. Verify the web.config upload limits are appropriate for your hosting environment
+3. Verify the request body limits are appropriate for your hosting environment
 
 ### File System Permissions
 The application needs write access to the `/Uploads/TeachingMaterials/` directory:

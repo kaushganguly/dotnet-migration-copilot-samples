@@ -14,7 +14,12 @@
         "passBuild": "true",
         "passUnitTests": "true"
       },
-      "status": "started"
+      "status": "success",
+      "taskSummary": "Migrated ContosoUniversity from .NET Framework 4.8 and ASP.NET MVC 5 to .NET 10 and ASP.NET Core MVC. The SDK-style project build succeeded with no warnings or errors; dotnet test exited successfully, though the solution has no test projects.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {
