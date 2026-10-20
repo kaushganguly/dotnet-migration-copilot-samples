@@ -1,65 +1,43 @@
-# Contoso University - .NET Framework 4.8.2
+# Contoso University
 
-This project is a ASP.NET MVC 5 targeting .NET Framework 4.8.2.
+Contoso University is an ASP.NET Core MVC application targeting .NET 10.0.
 
-## Project Overview
+## Stack
 
-### Framework
-- ASP.NET MVC 5 (.NET Framework 4.8.2)
+- ASP.NET Core MVC with SDK-style project format
+- Entity Framework Core 10 and SQL Server
+- PackageReference-based NuGet dependencies
+- JSON APIs using the ASP.NET Core `System.Text.Json` defaults
 
-### Database Access: Entity Framework
-- Entity Framework Core 3.1.32
+## Project structure
 
-### Project Structure
-```
+```text
 ContosoUniversity/
-├── App_Start/              # Application startup configuration
-├── Controllers/            # MVC Controllers
-├── Data/                   # Entity Framework context and initializer
-├── Models/                 # Data models and view models
-├── Views/                  # Razor views
-├── Content/                # CSS and other content
-├── Scripts/                # JavaScript files
-├── Properties/             # Assembly properties
-├── Global.asax             # Application global events
-├── Web.config              # Configuration file
-└── packages.config         # NuGet packages
+├── Controllers/       # MVC controllers
+├── Data/              # EF Core context and database initializer
+├── Models/            # Entity and view models
+├── Services/          # Application services
+├── Views/             # ASP.NET Core Razor views
+├── wwwroot/           # CSS, JavaScript, and uploaded teaching material images
+├── Program.cs         # Hosting, dependency injection, and routing
+└── appsettings.json   # Application configuration
 ```
 
-## Database Configuration
+## Database configuration
 
-The application uses SQL Server LocalDB with the following connection string in `Web.config`:
-```xml
-  <connectionStrings>
-    <add name="DefaultConnection" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ContosoUniversityNoAuthEFCore;Integrated Security=True;MultipleActiveResultSets=True" />
-  </connectionStrings>
+The default connection string targets SQL Server LocalDB and is configured in
+`appsettings.json`. Override it for another environment with the standard
+`ConnectionStrings__DefaultConnection` environment variable. The database is
+created and seeded on application startup.
+
+## Run
+
+Install the .NET 10 SDK and configure a reachable SQL Server instance, then run:
+
+```sh
+dotnet restore ContosoUniversity.sln
+dotnet run --project ContosoUniversity.csproj
 ```
 
-## Running the Application
-
-1. **Prerequisites**:
-   - Visual Studio 2019 or later
-   - IIS Express
-   - SQL Server LocalDB
-   - Microsoft Message Queue (MSMQ) Server enabled
-
-2. **Setup**:
-   - Open the project in Visual Studio
-   - Restore NuGet packages
-   - Build the solution
-   - Run using IIS Express
-
-## Features
-
-- **Student Management**: CRUD operations for students with pagination and search
-- **Course Management**: Manage courses and their assignments to departments
-- **Instructor Management**: Handle instructor assignments and office locations
-- **Department Management**: Manage departments and their administrators
-- **Statistics**: View enrollment statistics by date
-
-## Database Initialization
-
-The application uses Entity Framework Core Code First with a database initializer that:
-- Creates the database if it doesn't exist
-- Seeds sample data including students, instructors, courses, and departments
-- Handles model changes by recreating the database
+Course image uploads are limited to 5 MB, and the total multipart request limit
+is 10 MB. Uploaded images are stored under `wwwroot/Uploads/TeachingMaterials`.

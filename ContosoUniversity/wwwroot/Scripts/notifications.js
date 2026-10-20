@@ -67,21 +67,36 @@
             
             // Determine notification type based on operation
             var type = 'info';
-            if (notification.Operation === 'CREATE') {
+            if (notification.operation === 'CREATE') {
                 type = 'success';
-            } else if (notification.Operation === 'DELETE') {
+            } else if (notification.operation === 'DELETE') {
                 type = 'warning';
             }
             
             notificationEl.className = 'notification notification-' + type;
             
-            var timeAgo = this.getTimeAgo(new Date(notification.CreatedAt));
-            
-            notificationEl.innerHTML = 
-                '<button class="notification-close" onclick="NotificationSystem.closeNotification(this)">&times;</button>' +
-                '<div class="notification-title">' + notification.Operation + ' - ' + notification.EntityType + '</div>' +
-                '<div class="notification-message">' + notification.Message + '</div>' +
-                '<div class="notification-time">By ' + notification.CreatedBy + ' • ' + timeAgo + '</div>';
+            var timeAgo = this.getTimeAgo(new Date(notification.createdAt));
+            var closeButton = document.createElement('button');
+            closeButton.className = 'notification-close';
+            closeButton.type = 'button';
+            closeButton.textContent = '×';
+            closeButton.addEventListener('click', function() {
+                self.closeNotification(closeButton);
+            });
+
+            var title = document.createElement('div');
+            title.className = 'notification-title';
+            title.textContent = notification.operation + ' - ' + notification.entityType;
+
+            var message = document.createElement('div');
+            message.className = 'notification-message';
+            message.textContent = notification.message;
+
+            var timestamp = document.createElement('div');
+            timestamp.className = 'notification-time';
+            timestamp.textContent = 'By ' + notification.createdBy + ' • ' + timeAgo;
+
+            notificationEl.append(closeButton, title, message, timestamp);
             
             // Add to container
             this.container.appendChild(notificationEl);

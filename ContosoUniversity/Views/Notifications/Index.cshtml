@@ -6,11 +6,11 @@
 <div class="row">
     <div class="col-md-12">
         <h2>@ViewBag.Title</h2>
-        <p class="text-muted">Real-time notifications for entity operations across the system.</p>
+        <p class="text-muted">Notifications for entity operations across the system.</p>
         
         <div class="alert alert-info" role="alert">
-            <strong>Real-time Notifications</strong><br />
-            As an administrator, you will receive notifications in the top-right corner when any entity (students, courses, instructors, departments) is created, updated, or deleted by any user in the system.
+            <strong>Notifications</strong><br />
+            The notification service records student, course, instructor, and department changes in the application database. The browser checks for pending notifications every five seconds.
         </div>
         
         <div class="card">
@@ -72,20 +72,19 @@
             </div>
             <div class="panel-body">
                 <div class="alert alert-warning" role="alert">
-                    <strong>Note:</strong> This notification system uses Microsoft Message Queuing (MSMQ) as the underlying technology for reliable message delivery.
+                    Notifications are stored by the application database-backed service and shown during browser polling.
                 </div>
                 
                 <h4>Features:</h4>
                 <ul>
-                    <li><strong>Real-time delivery</strong> - Notifications appear immediately when operations occur</li>
-                    <li><strong>Reliable messaging</strong> - MSMQ ensures messages are not lost</li>
-                    <li><strong>Admin-only</strong> - Only administrators receive these notifications</li>
+                    <li><strong>Polling delivery</strong> - Notifications are displayed during the next browser poll</li>
+                    <li><strong>Database storage</strong> - Notifications are stored with the application data</li>
                     <li><strong>Auto-dismiss</strong> - Notifications automatically disappear after 8 seconds</li>
                     <li><strong>User-friendly</strong> - Click the × to dismiss notifications manually</li>
                 </ul>
                 
-                <h4>Queue Information:</h4>
-                <p><strong>Queue Path:</strong> <code>.\\Private$\\ContosoUniversityNotifications</code></p>
+                <h4>Delivery Information:</h4>
+                <p><strong>Storage:</strong> <code>Notification</code> table</p>
                 <p><strong>Check Interval:</strong> 5 seconds</p>
                 <p><strong>Max Visible Notifications:</strong> 5 at a time</p>
             </div>
