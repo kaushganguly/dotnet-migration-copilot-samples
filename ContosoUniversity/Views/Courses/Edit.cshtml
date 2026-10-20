@@ -61,7 +61,6 @@
                 <input type="file" name="teachingMaterialImage" accept="image/*" class="form-control" />
                 <small class="text-muted">Supported formats: JPG, JPEG, PNG, GIF, BMP. Max size: 5MB.</small>
                 @Html.ValidationMessage("teachingMaterialImage", "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.TeachingMaterialImagePath)
             </div>
         </div>
 
@@ -78,5 +77,6 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 }
