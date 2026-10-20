@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "id": "20261020111437",
+    "generated_at": "2026-10-20T11:14:37.0000000Z",
+    "note": "Security-only report (AppCAT was not run or failed)"
+  },
+  "security": [
+    {
+      "id": "CVE-2024-0056",
+      "title": "Microsoft.Data.SqlClient and System.Data.SqlClient vulnerable to SQL Data Provider Security Feature Bypass ",
+      "category": "CVE",
+      "severity": "mandatory",
+      "description": "[CVE-2024-0056](https://github.com/advisories/GHSA-98g6-xh36-x2p7): Microsoft.Data.SqlClient and System.Data.SqlClient vulnerable to SQL Data Provider Security Feature Bypass \n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 2.1.7\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 3.1.5\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 4.0.5\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 5.1.3\n\nMicrosoft.Data.SqlClient and System.Data.SqlClient SQL Data Provider Security Feature Bypass Vulnerability",
+      "evidence": {
+        "files": [
+          "packages.config:14"
+        ],
+        "explanation": "[CVE-2024-0056](https://github.com/advisories/GHSA-98g6-xh36-x2p7): Microsoft.Data.SqlClient and System.Data.SqlClient vulnerable to SQL Data Provider Security Feature Bypass \n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 2.1.7\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 3.1.5\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 4.0.5\n  - Microsoft.Data.SqlClient:2.1.4 (declared at packages.config:14); first patched version: 5.1.3\n\nMicrosoft.Data.SqlClient and System.Data.SqlClient SQL Data Provider Security Feature Bypass Vulnerability"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CWE-732",
+      "title": "Incorrect Permission Assignment for Critical Resource",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "evidence": {
+        "files": [
+          "Services/NotificationService.cs:20-23"
+        ],
+        "explanation": "NotificationService creates the message queue and grants MessageQueueAccessRights.FullControl to the Everyone principal, allowing unintended actors to read or modify the security-critical queue."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-22",
+      "title": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+      "evidence": {
+        "files": [
+          "Controllers/CoursesController.cs:47",
+          "Controllers/CoursesController.cs:172-175",
+          "Controllers/CoursesController.cs:227-235"
+        ],
+        "explanation": "The Create and Edit actions bind TeachingMaterialImagePath from the request. Edit and DeleteConfirmed pass that value to Server.MapPath and delete the resolved file without constraining it to Uploads/TeachingMaterials. A crafted path can therefore escape the intended upload directory and cause deletion outside it."
+      },
+      "storyPoint": 8
+    },
+    {
+      "id": "CWE-23",
+      "title": "Relative Path Traversal",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+      "evidence": {
+        "files": [
+          "Controllers/CoursesController.cs:47",
+          "Controllers/CoursesController.cs:172-175",
+          "Controllers/CoursesController.cs:227-235"
+        ],
+        "explanation": "The request-bound TeachingMaterialImagePath is mapped and then used in file deletion without rejecting or resolving relative traversal sequences such as ../, allowing a crafted relative path to escape the upload directory."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-36",
+      "title": "Absolute Path Traversal",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+      "evidence": {
+        "files": [
+          "Controllers/CoursesController.cs:47",
+          "Controllers/CoursesController.cs:172-175",
+          "Controllers/CoursesController.cs:227-235"
+        ],
+        "explanation": "The request-bound TeachingMaterialImagePath is passed to Server.MapPath and then used for file deletion without enforcing an upload-directory root, so absolute virtual paths can resolve outside the intended directory."
+      },
+      "storyPoint": 5
+    }
+  ],
+  "rules": {},
+  "projects": [
+    {
+      "properties": {
+        "repo": "ContosoUniversity",
+        "languages": [
+          "C#"
+        ],
+        "frameworks": [
+          ".NET Framework 4.8"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": []
+    }
+  ]
+}
