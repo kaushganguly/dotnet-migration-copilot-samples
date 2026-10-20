@@ -14,7 +14,7 @@
         "passBuild": "true",
         "passUnitTests": "true"
       },
-      "status": "pending"
+      "status": "started"
     }
   ],
   "metadata": {

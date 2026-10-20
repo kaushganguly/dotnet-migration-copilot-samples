@@ -1,53 +1,47 @@
-# Contoso University - .NET Framework 4.8.2
+# Contoso University - .NET 10
 
-This project is a ASP.NET MVC 5 targeting .NET Framework 4.8.2.
+This project is an ASP.NET Core MVC application targeting .NET 10.
 
 ## Project Overview
 
 ### Framework
-- ASP.NET MVC 5 (.NET Framework 4.8.2)
+- ASP.NET Core MVC (.NET 10)
 
 ### Database Access: Entity Framework
-- Entity Framework Core 3.1.32
+- Entity Framework Core 10
 
 ### Project Structure
 ```
 ContosoUniversity/
-├── App_Start/              # Application startup configuration
+├── Program.cs              # ASP.NET Core startup and middleware
 ├── Controllers/            # MVC Controllers
 ├── Data/                   # Entity Framework context and initializer
 ├── Models/                 # Data models and view models
 ├── Views/                  # Razor views
 ├── Content/                # CSS and other content
 ├── Scripts/                # JavaScript files
-├── Properties/             # Assembly properties
-├── Global.asax             # Application global events
-├── Web.config              # Configuration file
-└── packages.config         # NuGet packages
+├── appsettings.json        # Connection strings and application settings
+└── ContosoUniversity.csproj # SDK-style project and NuGet dependencies
 ```
 
 ## Database Configuration
 
-The application uses SQL Server LocalDB with the following connection string in `Web.config`:
-```xml
-  <connectionStrings>
-    <add name="DefaultConnection" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ContosoUniversityNoAuthEFCore;Integrated Security=True;MultipleActiveResultSets=True" />
-  </connectionStrings>
+The default connection string is configured in `appsettings.json` for SQL Server LocalDB. Override it with the `ConnectionStrings__DefaultConnection` environment variable when using another SQL Server:
+```sh
+ConnectionStrings__DefaultConnection="Server=localhost;Database=ContosoUniversity;Integrated Security=True;TrustServerCertificate=True" dotnet run
 ```
 
 ## Running the Application
 
 1. **Prerequisites**:
-   - Visual Studio 2019 or later
-   - IIS Express
+   - .NET 10 SDK
    - SQL Server LocalDB
-   - Microsoft Message Queue (MSMQ) Server enabled
 
 2. **Setup**:
-   - Open the project in Visual Studio
-   - Restore NuGet packages
-   - Build the solution
-   - Run using IIS Express
+   - Run `dotnet restore ContosoUniversity.sln`
+   - Run `dotnet build ContosoUniversity.sln`
+   - Set `ConnectionStrings__DefaultConnection` for your SQL Server, if needed
+   - Run `dotnet run --project ContosoUniversity.csproj`
 
 ## Features
 
@@ -59,7 +53,7 @@ The application uses SQL Server LocalDB with the following connection string in 
 
 ## Database Initialization
 
-The application uses Entity Framework Core Code First with a database initializer that:
+The application uses Entity Framework Core with a database initializer that:
 - Creates the database if it doesn't exist
 - Seeds sample data including students, instructors, courses, and departments
 - Handles model changes by recreating the database
