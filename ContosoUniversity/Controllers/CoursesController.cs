@@ -23,6 +23,22 @@ namespace ContosoUniversity.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        private string GetTeachingMaterialFilePath(string imagePath)
+        {
+            if (string.IsNullOrWhiteSpace(imagePath))
+            {
+                return null;
+            }
+
+            var fileName = Path.GetFileName(imagePath.Replace('\\', '/'));
+            var uploadsPath = Path.GetFullPath(Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", "TeachingMaterials"));
+            var filePath = Path.GetFullPath(Path.Combine(uploadsPath, fileName));
+            var uploadsPathPrefix = uploadsPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+
+            return filePath.StartsWith(uploadsPathPrefix, comparison) ? filePath : null;
+        }
+
         // GET: Courses
         public ActionResult Index()
         {
@@ -55,7 +71,7 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("CourseID,Title,Credits,DepartmentID,TeachingMaterialImagePath")] Course course, IFormFile teachingMaterialImage)
+        public async Task<ActionResult> Create([Bind("CourseID,Title,Credits,DepartmentID")] Course course, IFormFile teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
@@ -141,10 +157,18 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind("CourseID,Title,Credits,DepartmentID,TeachingMaterialImagePath")] Course course, IFormFile teachingMaterialImage)
+        public async Task<ActionResult> Edit([Bind("CourseID,Title,Credits,DepartmentID")] Course course, IFormFile teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
+                var existingCourse = db.Courses.AsNoTracking().SingleOrDefault(c => c.CourseID == course.CourseID);
+                if (existingCourse == null)
+                {
+                    return NotFound();
+                }
+
+                course.TeachingMaterialImagePath = existingCourse.TeachingMaterialImagePath;
+
                 // Handle file upload if a new image is provided
                 if (teachingMaterialImage != null && teachingMaterialImage.Length > 0)
                 {
@@ -181,14 +205,10 @@ namespace ContosoUniversity.Controllers
                         var filePath = Path.Combine(uploadsPath, fileName);
 
                         // Delete old file if exists
-                        if (!string.IsNullOrEmpty(course.TeachingMaterialImagePath))
+                        var oldFilePath = GetTeachingMaterialFilePath(existingCourse.TeachingMaterialImagePath);
+                        if (oldFilePath != null && System.IO.File.Exists(oldFilePath))
                         {
-                            var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath,
-                                course.TeachingMaterialImagePath.Replace("~/", string.Empty).Replace('/', Path.DirectorySeparatorChar));
-                            if (System.IO.File.Exists(oldFilePath))
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                            }
+                            System.IO.File.Delete(oldFilePath);
                         }
 
                         // Save new file
@@ -244,9 +264,8 @@ namespace ContosoUniversity.Controllers
             // Delete associated image file if it exists
             if (!string.IsNullOrEmpty(course.TeachingMaterialImagePath))
             {
-                var filePath = Path.Combine(_webHostEnvironment.WebRootPath,
-                    course.TeachingMaterialImagePath.Replace("~/", string.Empty).Replace('/', Path.DirectorySeparatorChar));
-                if (System.IO.File.Exists(filePath))
+                var filePath = GetTeachingMaterialFilePath(course.TeachingMaterialImagePath);
+                if (filePath != null && System.IO.File.Exists(filePath))
                 {
                     try
                     {
