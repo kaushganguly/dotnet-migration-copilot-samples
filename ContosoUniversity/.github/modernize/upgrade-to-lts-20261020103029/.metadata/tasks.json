@@ -16,7 +16,12 @@
         "passUnitTests": "true",
         "securityComplianceCheck": "true"
       },
-      "status": "started"
+      "status": "success",
+      "taskSummary": "Migrated ContosoUniversity from .NET Framework 4.8 and ASP.NET MVC 5 to SDK-style .NET 10 and ASP.NET Core MVC. The solution builds without warnings, dependency and CodeQL scans report no vulnerabilities, and no test project exists. Runtime startup could not be smoke-tested because LocalDB is unsupported on the Linux runner.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {
