@@ -139,8 +139,15 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind("CourseID,Title,Credits,DepartmentID,TeachingMaterialImagePath")] Course course, IFormFile teachingMaterialImage)
+        public IActionResult Edit([Bind("CourseID,Title,Credits,DepartmentID")] Course course, IFormFile teachingMaterialImage)
         {
+            var existingCourse = db.Courses.Find(course.CourseID);
+            if (existingCourse == null)
+            {
+                return NotFound();
+            }
+            course.TeachingMaterialImagePath = existingCourse.TeachingMaterialImagePath;
+
             if (ModelState.IsValid)
             {
                 // Handle file upload if a new image is provided
@@ -176,9 +183,9 @@ namespace ContosoUniversity.Controllers
                         var filePath = Path.Combine(uploadsPath, fileName);
 
                         // Delete old file if exists
-                        if (!string.IsNullOrEmpty(course.TeachingMaterialImagePath))
+                        if (!string.IsNullOrEmpty(existingCourse.TeachingMaterialImagePath))
                         {
-                            var oldFilePath = GetExistingUploadPath(course.TeachingMaterialImagePath);
+                            var oldFilePath = GetExistingUploadPath(existingCourse.TeachingMaterialImagePath);
                             if (System.IO.File.Exists(oldFilePath))
                             {
                                 System.IO.File.Delete(oldFilePath);
@@ -191,6 +198,7 @@ namespace ContosoUniversity.Controllers
                             teachingMaterialImage.CopyTo(fileStream);
                         }
                         course.TeachingMaterialImagePath = $"~/Uploads/TeachingMaterials/{fileName}";
+                        existingCourse.TeachingMaterialImagePath = course.TeachingMaterialImagePath;
                     }
                     catch (Exception ex)
                     {
@@ -200,7 +208,9 @@ namespace ContosoUniversity.Controllers
                     }
                 }
 
-                db.Entry(course).State = EntityState.Modified;
+                existingCourse.Title = course.Title;
+                existingCourse.Credits = course.Credits;
+                existingCourse.DepartmentID = course.DepartmentID;
                 db.SaveChanges();
                 
                 // Send notification for course update
