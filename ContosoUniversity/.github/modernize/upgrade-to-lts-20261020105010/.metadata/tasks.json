@@ -1,0 +1,29 @@
+{
+  "$schema": "tasks-schema.json",
+  "description": ".NET version upgrade plan from .NET Framework 4.8 to .NET 10.0",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-dotnet-to-net10",
+      "description": "Upgrade ContosoUniversity from .NET Framework 4.8 to .NET 10.0",
+      "reason": ".NET Framework 4.8 is the final release of .NET Framework and receives only security fixes, with no new features, performance improvements, or full compatibility with modern Azure SDKs and tooling. The project also depends on EF Core 3.1, which is out of support. Upgrading to .NET 10.0 LTS ensures long-term support, access to modern APIs, cross-platform hosting, and full Azure SDK/EF Core compatibility.",
+      "requirements": "Upgrade the ContosoUniversity ASP.NET MVC 5 web application from .NET Framework 4.8 to .NET 10.0, including conversion to the SDK-style project format, migration from the System.Web-based MVC 5 pipeline to ASP.NET Core MVC, migration from packages.config to PackageReference with dependency updates (EF Core, Microsoft.Data.SqlClient, Microsoft.Identity.Client, JSON serialization, bundling/minification), configuration migration from Web.config to appsettings.json, and associated code/API compatibility fixes across controllers, views, models, and data access.",
+      "environmentConfiguration": null,
+      "skills": [],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true",
+        "securityComplianceCheck": "true"
+      },
+      "status": "pending"
+    }
+  ],
+  "metadata": {
+    "planName": "upgrade-to-lts-20261020105010",
+    "projectName": "ContosoUniversity",
+    "language": "dotnet",
+    "createdAt": "2026-10-20T10:50:10.000Z",
+    "version": "1.0"
+  }
+}
