@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Modernization tasks for ContosoUniversity.",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-dotnet",
+      "description": "Upgrade ContosoUniversity to the latest .NET LTS release.",
+      "reason": "The application targets .NET Framework 4.8 and the requested modernization requires a supported .NET LTS runtime.",
+      "requirements": "Move the application from .NET Framework 4.8 and ASP.NET MVC 5 to .NET 10 LTS and a compatible web framework. Convert the legacy project to a supported project format and preserve existing application behavior.",
+      "dependencies": [],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "002-migrate-sql-to-azure-sql",
+      "description": "Move university data from SQL Server to Azure SQL Database.",
+      "reason": "Azure SQL Database is the documented cloud database target for the application.",
+      "requirements": "Migrate the application's existing SQL Server persistence and data access to Azure SQL Database. Preserve the current data model and application behavior, and use managed identity for Azure authentication.",
+      "dependencies": [
+        "001-upgrade-dotnet"
+      ],
+      "skills": [
+        {
+          "name": "migration-azure-sql-database",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "003-migrate-notifications-to-service-bus",
+      "description": "Move notification messaging from MSMQ to Azure Service Bus.",
+      "reason": "The application uses MSMQ for notifications, and Azure Service Bus is the documented messaging target.",
+      "requirements": "Replace the application's MSMQ-backed notification messaging with Azure Service Bus while preserving notification behavior. Use managed identity for Azure authentication.",
+      "dependencies": [
+        "002-migrate-sql-to-azure-sql"
+      ],
+      "skills": [
+        {
+          "name": "migration-azure-servicebus",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "004-migrate-uploads-to-blob",
+      "description": "Move teaching-material uploads from local disk to Azure Blob Storage.",
+      "reason": "Local file storage is unsuitable for the documented Azure-hosted deployment.",
+      "requirements": "Replace local-disk storage and retrieval of teaching-material uploads with Azure Blob Storage. Preserve upload and access behavior, and use managed identity for Azure authentication.",
+      "dependencies": [
+        "003-migrate-notifications-to-service-bus"
+      ],
+      "skills": [
+        {
+          "name": "migration-azure-storage-blob",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "security",
+      "id": "005-remediate-security-cves",
+      "description": "Find and remediate known vulnerabilities in application dependencies.",
+      "reason": "The requested modernization requires resolving security CVEs before deployment.",
+      "requirements": "Scan direct and transitive application dependencies for known CVEs and remediate all identified vulnerabilities by upgrading or replacing affected dependencies. Verify that no known dependency CVEs remain and that the application builds and its tests pass.",
+      "dependencies": [
+        "004-migrate-uploads-to-blob"
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "deployment",
+      "id": "006-deploy-to-container-apps",
+      "description": "Containerize and deploy ContosoUniversity to Azure Container Apps.",
+      "reason": "The project documentation identifies Azure Container Apps as the application's target hosting platform.",
+      "requirements": "Prepare the modernized application for Azure Container Apps and deploy it to the target environment. Configure access to Azure SQL Database, Azure Service Bus, and Azure Blob Storage using managed identity. No Azure subscription or environment details were supplied.",
+      "dependencies": [
+        "005-remediate-security-cves"
+      ],
+      "skills": [
+        {
+          "name": "azcli-containerapp-deploy",
+          "location": "builtin"
+        }
+      ],
+      "targetAzureService": "azurecontainerapp",
+      "resourceStatus": "Environment and resource details not provided; provisioning not requested",
+      "deploymentTool": "bicep"
+    }
+  ],
+  "metadata": {
+    "planName": "modernize-plan-2",
+    "projectName": "ContosoUniversity",
+    "language": "dotnet",
+    "createdAt": "2026-10-20T13:13:55Z",
+    "version": "1.0"
+  }
+}
