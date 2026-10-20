@@ -7,7 +7,7 @@ This feature allows administrators to upload images for teaching materials (text
 - **Image Upload**: Upload teaching material images when creating or editing courses
 - **File Validation**: Supports JPG, JPEG, PNG, GIF, and BMP formats
 - **Size Limits**: Maximum file size of 5MB per image
-- **Secure Storage**: Images are stored in `/Uploads/TeachingMaterials/` directory
+- **Secure Storage**: Images are stored under `wwwroot/Uploads/TeachingMaterials/` and served from `/Uploads/TeachingMaterials/`
 - **Automatic Cleanup**: Images are automatically deleted when courses are removed
 - **Unique Filenames**: Each uploaded image gets a unique filename to prevent conflicts
 
@@ -38,7 +38,7 @@ This feature allows administrators to upload images for teaching materials (text
 ## Technical Details
 
 ### File Storage
-- Images are stored in `/Uploads/TeachingMaterials/` directory
+- Images are stored in `wwwroot/Uploads/TeachingMaterials/`
 - Filenames follow the pattern: `course_{CourseID}_{GUID}.{extension}`
 - Old images are automatically deleted when replaced
 - **Important**: Uploaded images are excluded from git repository via `.gitignore`
@@ -76,17 +76,15 @@ This feature allows administrators to upload images for teaching materials (text
 
 ### Configuration
 
-The following settings in `Web.config` control file upload limits:
-- `maxRequestLength="10240"` (10MB in KB)
-- `maxAllowedContentLength="10485760"` (10MB in bytes)
-- `executionTimeout="3600"` (1 hour timeout for large uploads)
+The multipart request limit is configured through `FormOptions.MultipartBodyLengthLimit`
+in `Program.cs` (10MB). Course uploads are separately limited to 5MB.
 
 ## Deployment Considerations
 
 ### Initial Setup
 1. Ensure the `/Uploads/TeachingMaterials/` directory exists on the server
 2. Set appropriate write permissions for the application pool identity
-3. Verify the web.config upload limits are appropriate for your hosting environment
+3. Verify the multipart request limit is appropriate for your hosting environment
 
 ### File System Permissions
 The application needs write access to the `/Uploads/TeachingMaterials/` directory:

@@ -16,7 +16,7 @@
         "passUnitTests": "true",
         "securityComplianceCheck": "true"
       },
-      "status": "pending"
+      "status": "started"
     }
   ],
   "metadata": {

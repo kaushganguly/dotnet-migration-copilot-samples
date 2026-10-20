@@ -23,6 +23,8 @@ namespace ContosoUniversity.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // Configure all DateTime properties to use datetime2
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
