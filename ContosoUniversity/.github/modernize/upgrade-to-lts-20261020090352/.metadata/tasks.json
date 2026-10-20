@@ -1,0 +1,27 @@
+{
+  "$schema": "tasks-schema.json",
+  "description": ".NET version upgrade plan from .NET Framework 4.8 to .NET 10.0",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-dotnet-to-net10",
+      "description": "Upgrade ContosoUniversity from .NET Framework 4.8 to .NET 10.0",
+      "reason": "The user explicitly requested an upgrade to .NET 10 (LTS). The project targets legacy .NET Framework 4.8 with ASP.NET MVC 5 and outdated dependencies (e.g., EF Core 3.1), so moving to .NET 10 provides long-term support, modern APIs and security updates.",
+      "requirements": "Upgrade the project from .NET Framework 4.8 to .NET 10.0, including project file modernization, web framework migration, dependency updates, and API compatibility fixes.",
+      "environmentConfiguration": null,
+      "skills": [],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      },
+      "status": "pending"
+    }
+  ],
+  "metadata": {
+    "planName": "upgrade-to-lts",
+    "projectName": "ContosoUniversity",
+    "language": "dotnet",
+    "createdAt": "2026-10-20T09:03:52.000Z",
+    "version": "1.0"
+  }
+}
