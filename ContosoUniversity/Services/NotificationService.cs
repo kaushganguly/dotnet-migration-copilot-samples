@@ -1,120 +1,85 @@
-using System;
-using System.Messaging;
-using System.Configuration;
+using ContosoUniversity.Data;
 using ContosoUniversity.Models;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContosoUniversity.Services
 {
     public class NotificationService
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
+        private readonly SchoolContext _context;
 
-        public NotificationService()
+        public NotificationService(SchoolContext context)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
+            _context = context;
         }
 
-        public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
+        public void SendNotification(
+            string entityType,
+            string entityId,
+            EntityOperation operation,
+            string userName = null)
         {
             SendNotification(entityType, entityId, null, operation, userName);
         }
 
-        public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
+        public void SendNotification(
+            string entityType,
+            string entityId,
+            string entityDisplayName,
+            EntityOperation operation,
+            string userName = null)
         {
-            try
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
+                : $"{entityType} (ID: {entityId})";
+            var message = operation switch
             {
-                var notification = new Notification
-                {
-                    EntityType = entityType,
-                    EntityId = entityId,
-                    Operation = operation.ToString(),
-                    Message = GenerateMessage(entityType, entityId, entityDisplayName, operation),
-                    CreatedAt = DateTime.Now,
-                    CreatedBy = userName ?? "System",
-                    IsRead = false
-                };
+                EntityOperation.CREATE => $"New {displayText} has been created",
+                EntityOperation.UPDATE => $"{displayText} has been updated",
+                EntityOperation.DELETE => $"{displayText} has been deleted",
+                _ => $"{displayText} operation: {operation}"
+            };
 
-                var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
-
-                _queue.Send(message);
-            }
-            catch (Exception ex)
+            _context.Notifications.Add(new Notification
             {
-                // Log error but don't break the main operation
-                System.Diagnostics.Debug.WriteLine($"Failed to send notification: {ex.Message}");
-            }
+                EntityType = entityType,
+                EntityId = entityId,
+                Operation = operation.ToString(),
+                Message = message,
+                CreatedAt = DateTime.Now,
+                CreatedBy = userName ?? "System",
+                IsRead = false
+            });
+            _context.SaveChanges();
         }
 
         public Notification ReceiveNotification()
         {
-            try
+            var notification = _context.Notifications
+                .Where(item => !item.IsRead)
+                .OrderBy(item => item.CreatedAt)
+                .ThenBy(item => item.Id)
+                .FirstOrDefault();
+
+            if (notification != null)
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
+                notification.IsRead = true;
+                notification.ReadAt = DateTime.Now;
+                _context.SaveChanges();
             }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
-                // No messages available
-                return null;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to receive notification: {ex.Message}");
-                return null;
-            }
+
+            return notification;
         }
 
         public void MarkAsRead(int notificationId)
         {
-            // In a real implementation, you might want to store notifications in database as well
-            // for persistence and tracking read status
-        }
-
-        private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
-        {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
-                : $"{entityType} (ID: {entityId})";
-
-            switch (operation)
+            var notification = _context.Notifications.Find(notificationId);
+            if (notification != null && !notification.IsRead)
             {
-                case EntityOperation.CREATE:
-                    return $"New {displayText} has been created";
-                case EntityOperation.UPDATE:
-                    return $"{displayText} has been updated";
-                case EntityOperation.DELETE:
-                    return $"{displayText} has been deleted";
-                default:
-                    return $"{displayText} operation: {operation}";
+                notification.IsRead = true;
+                notification.ReadAt = DateTime.Now;
+                _context.SaveChanges();
             }
-        }
-
-        public void Dispose()
-        {
-            _queue?.Dispose();
         }
     }
 }

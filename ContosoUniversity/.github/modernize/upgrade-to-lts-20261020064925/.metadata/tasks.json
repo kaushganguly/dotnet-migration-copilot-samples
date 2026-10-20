@@ -13,7 +13,12 @@
         "passBuild": "true",
         "passUnitTests": "true"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Converted ContosoUniversity to SDK-style .NET 10 and ASP.NET Core MVC, migrated EF Core and application hosting, and added two NotificationService unit tests. Build succeeded with no warnings/errors and both tests passed; live LocalDB validation was not run.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {

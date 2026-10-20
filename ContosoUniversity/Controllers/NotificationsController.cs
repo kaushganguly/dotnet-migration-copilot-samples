@@ -1,48 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
+using ContosoUniversity.Data;
 using ContosoUniversity.Services;
-using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
     public class NotificationsController : BaseController
     {
-        // GET: api/notifications - Get pending notifications for admin
-        [HttpGet]
-        public JsonResult GetNotifications()
+        public NotificationsController(SchoolContext db, NotificationService notificationService)
+            : base(db, notificationService)
         {
-            var notifications = new List<Notification>();
-            
+        }
+
+        [HttpGet]
+        public IActionResult GetNotifications()
+        {
+            var notifications = new List<Models.Notification>();
+
             try
             {
-                // Read all available notifications from the queue
-                Notification notification;
-                while ((notification = notificationService.ReceiveNotification()) != null)
+                while ((notificationService.ReceiveNotification()) is { } notification)
                 {
                     notifications.Add(notification);
-                    
-                    // Limit to prevent overwhelming the UI
                     if (notifications.Count >= 10)
+                    {
                         break;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error retrieving notifications: {ex.Message}");
-                return Json(new { success = false, message = "Error retrieving notifications" }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = "Error retrieving notifications" });
             }
 
-            return Json(new { 
-                success = true, 
-                notifications = notifications,
-                count = notifications.Count 
-            }, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                success = true,
+                notifications,
+                count = notifications.Count
+            });
         }
 
-        // POST: api/notifications/mark-read
         [HttpPost]
-        public JsonResult MarkAsRead(int id)
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkAsRead(int id)
         {
             try
             {
@@ -56,10 +57,6 @@ namespace ContosoUniversity.Controllers
             }
         }
 
-        // GET: Notifications/Index - Admin notification dashboard
-        public ActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
     }
 }
