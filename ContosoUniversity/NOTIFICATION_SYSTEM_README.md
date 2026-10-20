@@ -4,7 +4,7 @@ This project now includes a real-time notification system that alerts administra
 
 ## Overview
 
-The notification system uses **Microsoft Message Queuing (MSMQ)** as the underlying technology to provide reliable, real-time notifications to administrators.
+The notification system uses an **in-memory, thread-safe queue** (registered as a singleton service via dependency injection) as the underlying technology to provide real-time notifications to administrators. This replaces the original MSMQ-based implementation, which relied on a Windows-only API that is not available on .NET 10.
 
 ## Features
 
@@ -13,13 +13,13 @@ The notification system uses **Microsoft Message Queuing (MSMQ)** as the underly
 - **Operation tracking**: Tracks CREATE, UPDATE, and DELETE operations
 - **Admin-only**: Only users with administrator role receive notifications
 - **Non-intrusive UI**: Notifications appear in the top-right corner with auto-dismiss
-- **Reliable delivery**: Uses MSMQ for guaranteed message delivery
+- **In-process delivery**: Uses a singleton in-memory queue shared across requests for the lifetime of the running application
 
 ## How It Works
 
 ### Backend Components
 
-1. **NotificationService**: Handles MSMQ operations for sending/receiving messages
+1. **NotificationService**: Handles in-memory queue operations for sending/receiving messages (registered as a DI singleton)
 2. **BaseController**: Base class that all controllers inherit from to send notifications
 3. **Notification Model**: Entity to represent notification data
 4. **NotificationsController**: API endpoints for retrieving notifications
@@ -32,28 +32,25 @@ The notification system uses **Microsoft Message Queuing (MSMQ)** as the underly
 
 ### Technology Stack
 
-- **Microsoft Message Queuing (MSMQ)**: Message queue technology
-- **Entity Framework**: Data access for notification persistence
-- **ASP.NET MVC**: Web framework
+- **In-memory ConcurrentQueue**: Message queue technology (process-lifetime scoped)
+- **Entity Framework Core**: Data access
+- **ASP.NET Core MVC**: Web framework
 - **JavaScript/jQuery**: Frontend polling and UI updates
 - **Bootstrap**: UI styling
 
 ## Configuration
 
-The notification system is configured in `Web.config`:
+The notification system is registered as a singleton service in `Program.cs`:
 
-```xml
-<appSettings>
-    <add key="NotificationQueuePath" value=".\Private$\ContosoUniversityNotifications"/>
-</appSettings>
+```csharp
+builder.Services.AddSingleton<NotificationService>();
 ```
 
 ## Queue Details
 
-- **Queue Path**: `.\Private$\ContosoUniversityNotifications`
-- **Queue Type**: Private queue, auto-created if not exists
-- **Permissions**: Full control for "Everyone" (suitable for development)
-- **Message Format**: JSON serialized notification objects
+- **Queue Type**: In-memory `ConcurrentQueue<Notification>`, scoped to the application process
+- **Lifetime**: Singleton — shared across all requests, cleared on application restart (not durably persisted)
+- **Message Format**: Strongly typed `Notification` objects, serialized to JSON for the client via `NotificationsController`
 
 ## Usage
 
@@ -88,10 +85,8 @@ SendEntityNotification("Student", student.ID.ToString(), EntityOperation.CREATE)
 
 ## System Requirements
 
-- Windows operating system (for MSMQ)
-- MSMQ feature enabled (Windows Features → Message Queuing)
-- .NET Framework 4.8
-- SQL Server (for Entity Framework)
+- .NET 10.0 SDK/runtime
+- SQL Server (for Entity Framework Core)
 
 ## Testing the System
 
@@ -104,24 +99,24 @@ SendEntityNotification("Student", student.ID.ToString(), EntityOperation.CREATE)
 
 ### Common Issues
 
-1. **MSMQ not installed**: Enable "Message Queuing" in Windows Features
-2. **Queue permissions**: Ensure the application pool identity has access to create private queues
-3. **No notifications appearing**: Check browser console for JavaScript errors
-4. **Queue not created**: Verify the application has permissions to create private queues
+1. **No notifications appearing**: Check browser console for JavaScript errors
+2. **Notifications missing after a restart**: Expected — the in-memory queue is process-lifetime scoped and is not durably persisted across application restarts
 
 ### Development Notes
 
-- Notifications are sent asynchronously and won't block main operations if MSMQ fails
+- Notification sends are wrapped in a try/catch so failures don't affect user operations
 - Failed notification sends are logged to debug output but don't affect user operations
 - JavaScript polling occurs every 5 seconds
 - Maximum of 5 notifications are displayed simultaneously
 
 ## Architecture Benefits
 
-- **Decoupled**: MSMQ ensures notifications don't affect main application performance
-- **Reliable**: Messages persist even if the web application restarts
+- **Decoupled**: The notification queue is isolated from main application request handling
+- **Lightweight**: No external messaging infrastructure (e.g., MSMQ, a message broker) required
 - **Scalable**: Can easily extend to support multiple administrators
 - **Maintainable**: Clear separation between notification logic and business logic
+
+> **Note**: Because the queue is in-memory, notifications are not shared across multiple instances/replicas of the application and do not survive a process restart. For production, multi-instance deployments, consider a durable, distributed solution (e.g., a message broker or SignalR backed by a shared backplane).
 
 ## Future Enhancements
 

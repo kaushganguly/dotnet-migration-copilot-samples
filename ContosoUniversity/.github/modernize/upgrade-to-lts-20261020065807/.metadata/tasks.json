@@ -16,7 +16,12 @@
         "passUnitTests": "true",
         "securityComplianceCheck": "true"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Migrated ContosoUniversity from .NET Framework 4.8/System.Web to .NET 10 ASP.NET Core MVC. Build, available tests, and dependency security checks passed.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {
