@@ -1,0 +1,94 @@
+{
+  "input_name": "CWE - Concurrency & Synchronization",
+  "analysis_method": "LLM",
+  "execution_time_seconds": 2,
+  "status": "success",
+  "timestamp": "2026-10-20T12:33:29.1804724Z",
+  "result": {
+    "finding": "Assessed 6 CWE rules in Concurrency & Synchronization: 0 FOUND, 6 NOT_FOUND",
+    "values": [
+      {
+        "description": "The product uses the singleton pattern when creating a resource within a multithreaded environment.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Use of Singleton Pattern Without Synchronization in a Multithreaded Context",
+        "status": "NOT_FOUND",
+        "storyPoint": 5,
+        "severity": "potential",
+        "id": "CWE-543"
+      },
+      {
+        "description": "The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+        "status": "NOT_FOUND",
+        "storyPoint": 5,
+        "severity": "potential",
+        "id": "CWE-567"
+      },
+      {
+        "description": "The product utilizes multiple threads or processes to allow temporary access to a shared resource that can only be exclusive to one process at a time, but it does not properly synchronize these actions, which might cause simultaneous accesses of this resource by multiple threads or processes.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Improper Synchronization",
+        "status": "NOT_FOUND",
+        "storyPoint": 8,
+        "severity": "potential",
+        "id": "CWE-662"
+      },
+      {
+        "description": "The product does not properly acquire or release a lock on a resource, leading to unexpected resource state changes and behaviors.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Improper Locking",
+        "status": "NOT_FOUND",
+        "storyPoint": 8,
+        "severity": "potential",
+        "id": "CWE-667"
+      },
+      {
+        "description": "The product utilizes a shared resource in a concurrent manner but does not attempt to synchronize access to the resource.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Missing Synchronization",
+        "status": "NOT_FOUND",
+        "storyPoint": 8,
+        "severity": "potential",
+        "id": "CWE-820"
+      },
+      {
+        "description": "The product utilizes a shared resource in a concurrent manner, but it does not correctly synchronize access to the resource.",
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "category": "Concurrency & Synchronization",
+        "name": "Incorrect Synchronization",
+        "status": "NOT_FOUND",
+        "storyPoint": 8,
+        "severity": "potential",
+        "id": "CWE-821"
+      }
+    ],
+    "confidence": "high",
+    "evidence": [
+      "Scanned application source files for singleton creation, shared mutable data, threading, and synchronization primitives"
+    ]
+  }
+}

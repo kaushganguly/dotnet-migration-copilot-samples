@@ -1,0 +1,89 @@
+{
+  "analysis_method": "LLM",
+  "execution_time_seconds": 3,
+  "status": "success",
+  "timestamp": "2026-10-20T12:31:14.7299261Z",
+  "result": {
+    "finding": "Assessed 5 CWE rules in File & Path Security: 4 FOUND, 1 NOT_FOUND",
+    "confidence": "high",
+    "values": [
+      {
+        "category": "File & Path Security",
+        "status": "FOUND",
+        "severity": "optional",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [
+            "Controllers/CoursesController.cs"
+          ],
+          "explanation": "In the POST Edit action, TeachingMaterialImagePath is included in the model binding allowlist, and the value is passed to Server.MapPath at line 172 before the resulting path is deleted at line 175. A crafted relative pathname can therefore escape the intended upload directory."
+        },
+        "id": "CWE-22",
+        "name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+        "description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory."
+      },
+      {
+        "category": "File & Path Security",
+        "status": "FOUND",
+        "severity": "optional",
+        "storyPoint": 5,
+        "evidence": {
+          "files": [
+            "Controllers/CoursesController.cs"
+          ],
+          "explanation": "The POST Edit action binds TeachingMaterialImagePath from the request and maps it at line 172 without verifying that the resolved path remains under the uploads directory; relative traversal segments can reach other filesystem paths before deletion."
+        },
+        "id": "CWE-23",
+        "name": "Relative Path Traversal",
+        "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory."
+      },
+      {
+        "category": "File & Path Security",
+        "status": "FOUND",
+        "severity": "optional",
+        "storyPoint": 5,
+        "evidence": {
+          "files": [
+            "Controllers/CoursesController.cs"
+          ],
+          "explanation": "The POST Edit action binds TeachingMaterialImagePath from the request and passes it to Server.MapPath at line 172 without constraining the resolved path. An absolute or rooted path value can cause the subsequent File.Delete call at line 175 to target a path outside the upload directory."
+        },
+        "id": "CWE-36",
+        "name": "Absolute Path Traversal",
+        "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory."
+      },
+      {
+        "category": "File & Path Security",
+        "status": "FOUND",
+        "severity": "mandatory",
+        "storyPoint": 8,
+        "evidence": {
+          "files": [
+            "Controllers/CoursesController.cs"
+          ],
+          "explanation": "The Create and Edit actions validate uploads only by the client-supplied filename extension at lines 55-60 and 138-143, then save the raw content beneath the web-root Uploads directory at lines 76-87 and 159-180. No content signature or actual file type validation prevents arbitrary content from being stored with an allowed image suffix."
+        },
+        "id": "CWE-434",
+        "name": "Unrestricted Upload of File with Dangerous Type",
+        "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment."
+      },
+      {
+        "category": "File & Path Security",
+        "status": "NOT_FOUND",
+        "severity": "optional",
+        "storyPoint": 5,
+        "evidence": {
+          "files": [],
+          "explanation": ""
+        },
+        "id": "CWE-611",
+        "name": "Improper Restriction of XML External Entity Reference",
+        "description": "The product processes an XML document that can contain XML entities with URIs that resolve to documents outside of the intended sphere of control, causing the product to embed incorrect documents into its output."
+      }
+    ],
+    "evidence": [
+      "Scanned application source files for file & path security patterns"
+    ]
+  },
+  "input_name": "CWE - File & Path Security"
+}
