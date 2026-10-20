@@ -8,36 +8,36 @@ namespace ContosoUniversity.Models
     {
         [Key]
         public int Id { get; set; }
-        
+
         [Required]
         [StringLength(100)]
-        public string EntityType { get; set; }
-        
+        public string EntityType { get; set; } = string.Empty;
+
         [Required]
         [StringLength(50)]
-        public string EntityId { get; set; }
-        
+        public string EntityId { get; set; } = string.Empty;
+
         [Required]
         [StringLength(20)]
-        public string Operation { get; set; } // CREATE, UPDATE, DELETE
-        
+        public string Operation { get; set; } = string.Empty; // CREATE, UPDATE, DELETE
+
         [Required]
         [StringLength(256)]
-        public string Message { get; set; }
-        
+        public string Message { get; set; } = string.Empty;
+
         [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
-        
+
         [StringLength(100)]
-        public string CreatedBy { get; set; }
-        
+        public string? CreatedBy { get; set; }
+
         public bool IsRead { get; set; }
-        
+
         [Column(TypeName = "datetime2")]
         public DateTime? ReadAt { get; set; }
     }
-    
+
     public enum EntityOperation
     {
         CREATE,

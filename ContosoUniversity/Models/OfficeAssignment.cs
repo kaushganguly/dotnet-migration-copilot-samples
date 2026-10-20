@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ContosoUniversity.Models
 {
@@ -9,8 +9,9 @@ namespace ContosoUniversity.Models
         public int InstructorID { get; set; }
         [StringLength(50)]
         [Display(Name = "Office Location")]
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
-        public virtual Instructor Instructor { get; set; }
+        [ValidateNever]
+        public virtual Instructor Instructor { get; set; } = null!;
     }
 }
