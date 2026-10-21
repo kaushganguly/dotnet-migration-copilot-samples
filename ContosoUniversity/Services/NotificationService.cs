@@ -1,21 +1,29 @@
 using System;
-using System.Messaging;
-using System.Configuration;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Options;
+using MSMQ.Messaging;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    /// <summary>
+    /// Sends and receives entity-change notifications over MSMQ.
+    /// Migrated from System.Messaging (Windows-only, not available on .NET Core) to the
+    /// MSMQ.Messaging NuGet package per the migrating-to-msmq-messaging skill. The API surface
+    /// (MessageQueue/Message/XmlMessageFormatter) is unchanged - only the namespace differs -
+    /// so behavior is preserved. The queue path now comes from configuration (appsettings.json
+    /// "NotificationQueue:QueuePath") via the options pattern instead of
+    /// ConfigurationManager.AppSettings, which is unavailable outside System.Web/.NET Framework.
+    /// </summary>
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IOptions<NotificationQueueOptions> options)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
+            _queuePath = options?.Value?.QueuePath ?? @".\Private$\ContosoUniversityNotifications";
+
             // Ensure the queue exists
             if (!MessageQueue.Exists(_queuePath))
             {
@@ -26,7 +34,7 @@ namespace ContosoUniversity.Services
             {
                 _queue = new MessageQueue(_queuePath);
             }
-            
+
             // Configure queue formatter
             _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
@@ -95,8 +103,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)

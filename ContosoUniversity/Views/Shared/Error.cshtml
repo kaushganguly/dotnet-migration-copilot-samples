@@ -1,4 +1,6 @@
-@model System.Web.Mvc.HandleErrorInfo
+@model ContosoUniversity.Models.ErrorViewModel
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnvironment
+@using Microsoft.Extensions.Hosting
 
 @{
     ViewBag.Title = "Error";
@@ -7,15 +9,17 @@
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
-@if (Model != null && HttpContext.Current.IsDebuggingEnabled)
+@if (Model != null && Model.ShowRequestId)
 {
     <p>
-        <strong>Exception Details:</strong> @Model.Exception.Message
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
+}
+
+@if (HostEnvironment.IsDevelopment())
+{
     <p>
-        <strong>Controller:</strong> @Model.ControllerName
-    </p>
-    <p>
-        <strong>Action:</strong> @Model.ActionName
+        Swap to the <strong>Development</strong> environment to see the exception details page
+        for unhandled exceptions, or check the application logs for details of this error.
     </p>
 }
