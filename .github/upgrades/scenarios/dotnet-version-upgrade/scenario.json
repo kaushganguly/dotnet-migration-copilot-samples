@@ -3,7 +3,11 @@
   "operationId": "dd917127-8959-4d68-82c7-111eb5b97e0e",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-10-22T06:48:32.4731367Z",
-  "lastUpdateTime": "2026-10-22T06:48:32.4832781Z",
-  "properties": {},
+  "lastUpdateTime": "2026-10-22T07:10:42.8246824Z",
+  "properties": {
+    "taskStates": {
+      "03-final-validation": "InProgress"
+    }
+  },
   "folderPath": ""
 }
