@@ -11,15 +11,15 @@ namespace ContosoUniversity.Data
         {
         }
 
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<OfficeAssignment> OfficeAssignments { get; set; }
-        public DbSet<CourseAssignment> CourseAssignments { get; set; }
-        public DbSet<Person> People { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Instructor> Instructors { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Course> Courses { get; set; } = null!;
+        public DbSet<Enrollment> Enrollments { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
+        public DbSet<OfficeAssignment> OfficeAssignments { get; set; } = null!;
+        public DbSet<CourseAssignment> CourseAssignments { get; set; } = null!;
+        public DbSet<Person> People { get; set; } = null!;
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<Instructor> Instructors { get; set; } = null!;
+        public DbSet<Notification> Notifications { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
