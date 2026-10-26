@@ -1,6 +1,6 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using MSMQ.Messaging;
+using Microsoft.Extensions.Options;
 using ContosoUniversity.Models;
 using Newtonsoft.Json;
 
@@ -10,25 +10,41 @@ namespace ContosoUniversity.Services
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
+        private readonly bool _queueAvailable;
 
-        public NotificationService()
+        public NotificationService(IOptions<MessageQueueOptions> options)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
+            // Get queue path from configuration (appsettings.json "NotificationQueue:QueuePath")
+            // or fall back to the same default used previously under Web.config.
+            _queuePath = options?.Value?.QueuePath ?? @".\Private$\ContosoUniversityNotifications";
+
+            try
             {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                // Ensure the queue exists
+                if (!MessageQueue.Exists(_queuePath))
+                {
+                    _queue = MessageQueue.Create(_queuePath);
+                    _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                }
+                else
+                {
+                    _queue = new MessageQueue(_queuePath);
+                }
+
+                // Configure queue formatter
+                _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
+                _queueAvailable = true;
             }
-            else
+            catch (Exception ex)
             {
-                _queue = new MessageQueue(_queuePath);
+                // MSMQ (Microsoft Message Queuing) is a Windows-only feature that must be enabled
+                // on the host machine/OS, same requirement this service had under ASP.NET
+                // Framework. When it isn't available (e.g. non-Windows hosts, or Windows hosts
+                // without the feature installed), degrade gracefully instead of taking down every
+                // controller that depends on NotificationService via BaseController.
+                System.Diagnostics.Debug.WriteLine($"NotificationService: message queue unavailable, notifications are disabled. {ex.Message}");
+                _queueAvailable = false;
             }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
@@ -38,6 +54,11 @@ namespace ContosoUniversity.Services
 
         public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
         {
+            if (!_queueAvailable)
+            {
+                return;
+            }
+
             try
             {
                 var notification = new Notification
@@ -69,6 +90,11 @@ namespace ContosoUniversity.Services
 
         public Notification ReceiveNotification()
         {
+            if (!_queueAvailable)
+            {
+                return null;
+            }
+
             try
             {
                 var message = _queue.Receive(TimeSpan.FromSeconds(1));
