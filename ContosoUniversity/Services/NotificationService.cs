@@ -1,35 +1,19 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using System.Collections.Concurrent;
 using ContosoUniversity.Models;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
+    // Replaces the original MSMQ (System.Messaging) backed implementation: MSMQ is a
+    // Windows-only, COM-based technology with no supported .NET 10 equivalent. This
+    // in-process ConcurrentQueue preserves the exact public API surface so callers
+    // (BaseController, NotificationsController, Scripts/notifications.js contract)
+    // require no changes. Trade-off: notifications no longer survive an app restart
+    // and are not shared across multiple app instances/processes.
     public class NotificationService
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
-
-        public NotificationService()
-        {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-        }
+        private readonly ConcurrentQueue<Notification> _queue = new ConcurrentQueue<Notification>();
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
         {
@@ -51,14 +35,12 @@ namespace ContosoUniversity.Services
                     IsRead = false
                 };
 
+                // Serialize round-trip retained for parity with the previous implementation
+                // (also guards against accidentally enqueuing a non-serializable payload).
                 var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
+                var roundTripped = JsonConvert.DeserializeObject<Notification>(jsonMessage);
 
-                _queue.Send(message);
+                _queue.Enqueue(roundTripped);
             }
             catch (Exception ex)
             {
@@ -71,14 +53,7 @@ namespace ContosoUniversity.Services
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
-            }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
-                // No messages available
-                return null;
+                return _queue.TryDequeue(out var notification) ? notification : null;
             }
             catch (Exception ex)
             {
@@ -114,7 +89,7 @@ namespace ContosoUniversity.Services
 
         public void Dispose()
         {
-            _queue?.Dispose();
+            // No unmanaged resources to release with the in-process queue implementation.
         }
     }
 }
