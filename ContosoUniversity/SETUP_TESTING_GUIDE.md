@@ -1,6 +1,13 @@
 # Setup and Testing Guide for Notification System
 
-## Prerequisites
+> **Migration note:** The notification queue was migrated from MSMQ to an
+> in-process `System.Threading.Channels` queue as part of the .NET 10 upgrade.
+> MSMQ is Windows-only and is no longer used — the Windows Feature / MSMQ
+> installation steps below are historical (pre-migration) and are not required
+> to run the application today. The queue now lives entirely in the app's
+> process memory, so there is nothing to install or configure.
+
+## Prerequisites (pre-migration / historical — no longer required)
 
 1. **Enable MSMQ on Windows**:
    - Open "Turn Windows features on or off" (search for "Windows Features")

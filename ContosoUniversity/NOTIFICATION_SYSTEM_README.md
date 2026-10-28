@@ -2,9 +2,17 @@
 
 This project now includes a real-time notification system that alerts administrators whenever entity operations (create, update, delete) are performed in the system.
 
+> **Migration note:** As part of the .NET 10 migration, the underlying transport was
+> changed from MSMQ (`System.Messaging`, Windows-only) to an in-process,
+> cross-platform queue built on `System.Threading.Channels`
+> (see `Services/NotificationService.cs`). The public API and the behavior
+> described below are unchanged; references to MSMQ throughout this document
+> describe the pre-migration implementation and the installation steps for it
+> no longer apply.
+
 ## Overview
 
-The notification system uses **Microsoft Message Queuing (MSMQ)** as the underlying technology to provide reliable, real-time notifications to administrators.
+The notification system uses an in-process **`System.Threading.Channels`** queue as the underlying technology to provide reliable, real-time notifications to administrators.
 
 ## Features
 
