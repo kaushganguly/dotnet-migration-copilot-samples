@@ -1,0 +1,1557 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-10-29T07:49:10.4727739Z",
+  "analysisEndTime": "2026-10-29T07:49:13.427059Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 1,
+      "issues": 11,
+      "incidents": 65,
+      "effort": 65
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 30,
+        "Optional": 5,
+        "Potential": 30,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 41,
+        "Project": 2,
+        "Feature": 10,
+        "Binding": 12
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "ContosoUniversity.csproj",
+      "startingProject": true,
+      "issues": 11,
+      "storyPoints": 65,
+      "properties": {
+        "appName": "ContosoUniversity",
+        "projectKind": "ClassicClassLibrary",
+        "frameworks": [
+          "net48"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": false,
+        "isTestProject": false,
+        "numberOfFiles": 83,
+        "numberOfCodeFiles": 56,
+        "linesTotal": 251,
+        "linesOfCode": 68,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "577170cd-9a38-4f48-b876-d0daa29d4f96",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+              "protected": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+            "protectedSnippet": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+            "label": "Antlr 3.4.1.9004",
+            "properties": {
+              "PackageId": "Antlr",
+              "PackageVersion": "3.4.1.9004",
+              "PackageNewVersion": null,
+              "PackageReplacements": "Replace with new package Antlr4=4.6.6"
+            }
+          }
+        },
+        {
+          "incidentId": "7b63e629-0ea8-49b2-ac79-f95bd69a61ef",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Mvc, 5.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.Mvc, 5.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.AspNet.Mvc, 5.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.Mvc, 5.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.Mvc 5.2.9",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Mvc",
+              "PackageVersion": "5.2.9",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a5ea2621-9a40-4a7c-85a6-0f18ceea2c01",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Razor, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.Razor, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.AspNet.Razor, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.Razor, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.Razor 3.2.9",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Razor",
+              "PackageVersion": "3.2.9",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "20878fb4-c103-4597-94ab-abb1c0d508cf",
+          "ruleId": "NuGet.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+              "protected": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+            "protectedSnippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+            "label": "Microsoft.AspNet.Web.Optimization 1.1.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Web.Optimization",
+              "PackageVersion": "1.1.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "f8b8215c-ca76-445a-8781-42efa63ee12c",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.WebPages, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.WebPages, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.AspNet.WebPages, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.WebPages, 3.2.9\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.WebPages 3.2.9",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.WebPages",
+              "PackageVersion": "3.2.9",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "b43e3196-fb77-4157-a7f1-9938ccb71c32",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Bcl.AsyncInterfaces, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.14",
+              "protected": "Microsoft.Bcl.AsyncInterfaces, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Bcl.AsyncInterfaces, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.14",
+            "protectedSnippet": "Microsoft.Bcl.AsyncInterfaces, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.14",
+            "label": "Microsoft.Bcl.AsyncInterfaces 1.1.1",
+            "properties": {
+              "PackageId": "Microsoft.Bcl.AsyncInterfaces",
+              "PackageVersion": "1.1.1",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "9df48bdf-abf6-49b4-8746-d623c4c844f9",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Bcl.HashCode, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.HashCode, and replace with new package Microsoft.Bcl.HashCode 6.0.0",
+              "protected": "Microsoft.Bcl.HashCode, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.HashCode, and replace with new package Microsoft.Bcl.HashCode 6.0.0"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Bcl.HashCode, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.HashCode, and replace with new package Microsoft.Bcl.HashCode 6.0.0",
+            "protectedSnippet": "Microsoft.Bcl.HashCode, 1.1.1\n\nRecommendation:\n\nRemove Microsoft.Bcl.HashCode, and replace with new package Microsoft.Bcl.HashCode 6.0.0",
+            "label": "Microsoft.Bcl.HashCode 1.1.1",
+            "properties": {
+              "PackageId": "Microsoft.Bcl.HashCode",
+              "PackageVersion": "1.1.1",
+              "PackageNewVersion": "6.0.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "b9ee45b8-a8fa-4c77-bea5-1a0e9188df45",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform 2.0.1",
+            "properties": {
+              "PackageId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
+              "PackageVersion": "2.0.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "1f9021c8-fb6a-4877-9494-ddb1eba56ece",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore, and replace with new package Microsoft.EntityFrameworkCore 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore, and replace with new package Microsoft.EntityFrameworkCore 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore, and replace with new package Microsoft.EntityFrameworkCore 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore, and replace with new package Microsoft.EntityFrameworkCore 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "26d9e25a-6a46-428d-afae-161afecd342a",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Abstractions, and replace with new package Microsoft.EntityFrameworkCore.Abstractions 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Abstractions, and replace with new package Microsoft.EntityFrameworkCore.Abstractions 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Abstractions, and replace with new package Microsoft.EntityFrameworkCore.Abstractions 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Abstractions, and replace with new package Microsoft.EntityFrameworkCore.Abstractions 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore.Abstractions 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Abstractions",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "34f98ae1-1f37-4c65-b82b-e9f279693a63",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Analyzers, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Analyzers, and replace with new package Microsoft.EntityFrameworkCore.Analyzers 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore.Analyzers, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Analyzers, and replace with new package Microsoft.EntityFrameworkCore.Analyzers 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Analyzers, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Analyzers, and replace with new package Microsoft.EntityFrameworkCore.Analyzers 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Analyzers, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Analyzers, and replace with new package Microsoft.EntityFrameworkCore.Analyzers 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore.Analyzers 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Analyzers",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "82da9075-5a44-41b8-bb08-f92038089c48",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Relational, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Relational, and replace with new package Microsoft.EntityFrameworkCore.Relational 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore.Relational, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Relational, and replace with new package Microsoft.EntityFrameworkCore.Relational 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Relational, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Relational, and replace with new package Microsoft.EntityFrameworkCore.Relational 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Relational, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Relational, and replace with new package Microsoft.EntityFrameworkCore.Relational 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore.Relational 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Relational",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "aca79946-9d73-4860-9bd0-b0a1f049af51",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.SqlServer, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore.SqlServer, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.SqlServer, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.SqlServer, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.SqlServer, and replace with new package Microsoft.EntityFrameworkCore.SqlServer 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore.SqlServer 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.SqlServer",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "6a010822-1b39-494a-8ce2-54ac39299a78",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.Tools, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.14",
+              "protected": "Microsoft.EntityFrameworkCore.Tools, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.Tools, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.14",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.Tools, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.Tools, and replace with new package Microsoft.EntityFrameworkCore.Tools 10.0.14",
+            "label": "Microsoft.EntityFrameworkCore.Tools 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.Tools",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0390848d-31c3-420a-82d0-067097a8a1f2",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Caching.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Abstractions, and replace with new package Microsoft.Extensions.Caching.Abstractions 10.0.14",
+              "protected": "Microsoft.Extensions.Caching.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Abstractions, and replace with new package Microsoft.Extensions.Caching.Abstractions 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Caching.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Abstractions, and replace with new package Microsoft.Extensions.Caching.Abstractions 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Caching.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Abstractions, and replace with new package Microsoft.Extensions.Caching.Abstractions 10.0.14",
+            "label": "Microsoft.Extensions.Caching.Abstractions 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Caching.Abstractions",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4eff38df-24f4-45ce-9676-bf2d80aefcaf",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Caching.Memory, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Memory, and replace with new package Microsoft.Extensions.Caching.Memory 10.0.14",
+              "protected": "Microsoft.Extensions.Caching.Memory, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Memory, and replace with new package Microsoft.Extensions.Caching.Memory 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Caching.Memory, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Memory, and replace with new package Microsoft.Extensions.Caching.Memory 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Caching.Memory, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Caching.Memory, and replace with new package Microsoft.Extensions.Caching.Memory 10.0.14",
+            "label": "Microsoft.Extensions.Caching.Memory 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Caching.Memory",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "6ec84ec9-00b2-42e3-a551-8486c990dc39",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Configuration, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration, and replace with new package Microsoft.Extensions.Configuration 10.0.14",
+              "protected": "Microsoft.Extensions.Configuration, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration, and replace with new package Microsoft.Extensions.Configuration 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Configuration, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration, and replace with new package Microsoft.Extensions.Configuration 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Configuration, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration, and replace with new package Microsoft.Extensions.Configuration 10.0.14",
+            "label": "Microsoft.Extensions.Configuration 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Configuration",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "eef30b74-15e4-45bb-afce-9faf923cafc2",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Configuration.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Abstractions, and replace with new package Microsoft.Extensions.Configuration.Abstractions 10.0.14",
+              "protected": "Microsoft.Extensions.Configuration.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Abstractions, and replace with new package Microsoft.Extensions.Configuration.Abstractions 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Configuration.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Abstractions, and replace with new package Microsoft.Extensions.Configuration.Abstractions 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Configuration.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Abstractions, and replace with new package Microsoft.Extensions.Configuration.Abstractions 10.0.14",
+            "label": "Microsoft.Extensions.Configuration.Abstractions 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Configuration.Abstractions",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "34237ba3-3a34-4fce-8770-cb294cfb9ab5",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Configuration.Binder, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Binder, and replace with new package Microsoft.Extensions.Configuration.Binder 10.0.14",
+              "protected": "Microsoft.Extensions.Configuration.Binder, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Binder, and replace with new package Microsoft.Extensions.Configuration.Binder 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Configuration.Binder, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Binder, and replace with new package Microsoft.Extensions.Configuration.Binder 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Configuration.Binder, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Configuration.Binder, and replace with new package Microsoft.Extensions.Configuration.Binder 10.0.14",
+            "label": "Microsoft.Extensions.Configuration.Binder 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Configuration.Binder",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d447455f-15c1-4b2b-bfc1-69241a727e41",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.DependencyInjection, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection, and replace with new package Microsoft.Extensions.DependencyInjection 10.0.14",
+              "protected": "Microsoft.Extensions.DependencyInjection, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection, and replace with new package Microsoft.Extensions.DependencyInjection 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.DependencyInjection, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection, and replace with new package Microsoft.Extensions.DependencyInjection 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.DependencyInjection, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection, and replace with new package Microsoft.Extensions.DependencyInjection 10.0.14",
+            "label": "Microsoft.Extensions.DependencyInjection 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.DependencyInjection",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d79d6e00-1303-4eb8-8efd-426d64566b7a",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.DependencyInjection.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection.Abstractions, and replace with new package Microsoft.Extensions.DependencyInjection.Abstractions 10.0.14",
+              "protected": "Microsoft.Extensions.DependencyInjection.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection.Abstractions, and replace with new package Microsoft.Extensions.DependencyInjection.Abstractions 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.DependencyInjection.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection.Abstractions, and replace with new package Microsoft.Extensions.DependencyInjection.Abstractions 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.DependencyInjection.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.DependencyInjection.Abstractions, and replace with new package Microsoft.Extensions.DependencyInjection.Abstractions 10.0.14",
+            "label": "Microsoft.Extensions.DependencyInjection.Abstractions 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.DependencyInjection.Abstractions",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "c9ceb1d3-6e55-408d-93b5-7988df54777d",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Logging, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging, and replace with new package Microsoft.Extensions.Logging 10.0.14",
+              "protected": "Microsoft.Extensions.Logging, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging, and replace with new package Microsoft.Extensions.Logging 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Logging, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging, and replace with new package Microsoft.Extensions.Logging 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Logging, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging, and replace with new package Microsoft.Extensions.Logging 10.0.14",
+            "label": "Microsoft.Extensions.Logging 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Logging",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "cde9b63c-4478-4aab-84c9-275131283f10",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Logging.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.14",
+              "protected": "Microsoft.Extensions.Logging.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Logging.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Logging.Abstractions, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.14",
+            "label": "Microsoft.Extensions.Logging.Abstractions 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Logging.Abstractions",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "f04496e9-db54-41bf-ae8f-d2a0e047a6c7",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Options, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Options, and replace with new package Microsoft.Extensions.Options 10.0.14",
+              "protected": "Microsoft.Extensions.Options, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Options, and replace with new package Microsoft.Extensions.Options 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Options, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Options, and replace with new package Microsoft.Extensions.Options 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Options, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Options, and replace with new package Microsoft.Extensions.Options 10.0.14",
+            "label": "Microsoft.Extensions.Options 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Options",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "ffb520af-acad-4190-95f2-db6ca78de3ac",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Primitives, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Primitives, and replace with new package Microsoft.Extensions.Primitives 10.0.14",
+              "protected": "Microsoft.Extensions.Primitives, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Primitives, and replace with new package Microsoft.Extensions.Primitives 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Extensions.Primitives, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Primitives, and replace with new package Microsoft.Extensions.Primitives 10.0.14",
+            "protectedSnippet": "Microsoft.Extensions.Primitives, 3.1.32\n\nRecommendation:\n\nRemove Microsoft.Extensions.Primitives, and replace with new package Microsoft.Extensions.Primitives 10.0.14",
+            "label": "Microsoft.Extensions.Primitives 3.1.32",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Primitives",
+              "PackageVersion": "3.1.32",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "fd23ea88-d66a-4163-b71d-759864adf790",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Web.Infrastructure, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.Web.Infrastructure, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Web.Infrastructure, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.Web.Infrastructure, 2.0.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.Web.Infrastructure 2.0.1",
+            "properties": {
+              "PackageId": "Microsoft.Web.Infrastructure",
+              "PackageVersion": "2.0.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "6db7f664-7b19-4ab1-aa43-00e010ce44fc",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "NETStandard.Library, 2.0.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "NETStandard.Library, 2.0.3\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "NETStandard.Library, 2.0.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "NETStandard.Library, 2.0.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "NETStandard.Library 2.0.3",
+            "properties": {
+              "PackageId": "NETStandard.Library",
+              "PackageVersion": "2.0.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "1c4b0246-91e6-47e1-906b-813d21c7f32d",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Newtonsoft.Json, 13.0.3\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+              "protected": "Newtonsoft.Json, 13.0.3\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Newtonsoft.Json, 13.0.3\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+            "protectedSnippet": "Newtonsoft.Json, 13.0.3\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+            "label": "Newtonsoft.Json 13.0.3",
+            "properties": {
+              "PackageId": "Newtonsoft.Json",
+              "PackageVersion": "13.0.3",
+              "PackageNewVersion": "13.0.4",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "8d5df965-b619-4f35-85b8-3ac0e8534f94",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Buffers 4.5.1",
+            "properties": {
+              "PackageId": "System.Buffers",
+              "PackageVersion": "4.5.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "8abd7b3f-37ee-4cff-b2e7-1f06c9eb4399",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable 10.0.14",
+              "protected": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable 10.0.14",
+            "protectedSnippet": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable 10.0.14",
+            "label": "System.Collections.Immutable 1.7.1",
+            "properties": {
+              "PackageId": "System.Collections.Immutable",
+              "PackageVersion": "1.7.1",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "882ee4e7-e943-41c1-b5f2-051a16f92410",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.ComponentModel.Annotations, 4.7.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.ComponentModel.Annotations, 4.7.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.ComponentModel.Annotations, 4.7.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.ComponentModel.Annotations, 4.7.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.ComponentModel.Annotations 4.7.0",
+            "properties": {
+              "PackageId": "System.ComponentModel.Annotations",
+              "PackageVersion": "4.7.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0e21685d-bcb2-46b1-96b6-ebf1be23f5cb",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Diagnostics.DiagnosticSource, 4.7.1\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.14",
+              "protected": "System.Diagnostics.DiagnosticSource, 4.7.1\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Diagnostics.DiagnosticSource, 4.7.1\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.14",
+            "protectedSnippet": "System.Diagnostics.DiagnosticSource, 4.7.1\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.14",
+            "label": "System.Diagnostics.DiagnosticSource 4.7.1",
+            "properties": {
+              "PackageId": "System.Diagnostics.DiagnosticSource",
+              "PackageVersion": "4.7.1",
+              "PackageNewVersion": "10.0.14",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "2d3a99b7-8ccc-4fe6-99ac-ad8d2cf3b080",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Memory 4.5.4",
+            "properties": {
+              "PackageId": "System.Memory",
+              "PackageVersion": "4.5.4",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "219c1d92-18c4-4ea1-aad0-d2ba27bc0d5f",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Numerics.Vectors 4.5.0",
+            "properties": {
+              "PackageId": "System.Numerics.Vectors",
+              "PackageVersion": "4.5.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "f48b23da-d16f-4acb-a73d-c80b2c1a0c4f",
+          "ruleId": "NuGet.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Runtime.CompilerServices.Unsafe, 4.5.3\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+              "protected": "System.Runtime.CompilerServices.Unsafe, 4.5.3\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Runtime.CompilerServices.Unsafe, 4.5.3\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+            "protectedSnippet": "System.Runtime.CompilerServices.Unsafe, 4.5.3\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+            "label": "System.Runtime.CompilerServices.Unsafe 4.5.3",
+            "properties": {
+              "PackageId": "System.Runtime.CompilerServices.Unsafe",
+              "PackageVersion": "4.5.3",
+              "PackageNewVersion": "6.1.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "22183dd7-f999-456a-9608-5f5175bc55d0",
+          "ruleId": "NuGet.0003",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Threading.Tasks.Extensions, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Threading.Tasks.Extensions, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Threading.Tasks.Extensions, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Threading.Tasks.Extensions, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Threading.Tasks.Extensions 4.5.4",
+            "properties": {
+              "PackageId": "System.Threading.Tasks.Extensions",
+              "PackageVersion": "4.5.4",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "66a4eab4-beff-413f-a777-ee0feda89e91",
+          "ruleId": "NuGet.0005",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+              "protected": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+            "protectedSnippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+            "label": "Microsoft.AspNet.Web.Optimization 1.1.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Web.Optimization",
+              "PackageVersion": "1.1.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "397193bf-0d15-44a0-9b7d-803c9ac0d3c5",
+          "ruleId": "NuGet.0004",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nMicrosoft.Data.SqlClient, 7.1.1",
+              "protected": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nMicrosoft.Data.SqlClient, 7.1.1"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nMicrosoft.Data.SqlClient, 7.1.1",
+            "protectedSnippet": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nMicrosoft.Data.SqlClient, 7.1.1",
+            "label": "Microsoft.Data.SqlClient 2.1.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.SqlClient",
+              "PackageVersion": "2.1.4",
+              "PackageNewVersion": "7.1.1",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "df162fe0-d2b0-4b10-8c73-086977b91510",
+          "ruleId": "NuGet.0005",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nAn important security issue exists in this version of the package. It is recommended to update to a newer version.\nhttps://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-0056\nRemove Microsoft.Data.SqlClient, and replace with new package Microsoft.Data.SqlClient, 7.1.1",
+              "protected": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nAn important security issue exists in this version of the package. It is recommended to update to a newer version.\nhttps://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-0056\nRemove Microsoft.Data.SqlClient, and replace with new package Microsoft.Data.SqlClient, 7.1.1"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nAn important security issue exists in this version of the package. It is recommended to update to a newer version.\nhttps://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-0056\nRemove Microsoft.Data.SqlClient, and replace with new package Microsoft.Data.SqlClient, 7.1.1",
+            "protectedSnippet": "Microsoft.Data.SqlClient, 2.1.4\n\nRecommendation:\n\nAn important security issue exists in this version of the package. It is recommended to update to a newer version.\nhttps://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-0056\nRemove Microsoft.Data.SqlClient, and replace with new package Microsoft.Data.SqlClient, 7.1.1",
+            "label": "Microsoft.Data.SqlClient 2.1.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.SqlClient",
+              "PackageVersion": "2.1.4",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a7b1ea19-5fa1-412a-8d0d-0eb3b233ed57",
+          "ruleId": "NuGet.0005",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Identity.Client, 4.21.1\n\nRecommendation:\n\nMove to latest Microsoft.Identity.Client. See https://aka.ms/msal/LTS for details.\nRemove Microsoft.Identity.Client, and replace with new package Microsoft.Identity.Client, 4.92.0",
+              "protected": "Microsoft.Identity.Client, 4.21.1\n\nRecommendation:\n\nMove to latest Microsoft.Identity.Client. See https://aka.ms/msal/LTS for details.\nRemove Microsoft.Identity.Client, and replace with new package Microsoft.Identity.Client, 4.92.0"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Microsoft.Identity.Client, 4.21.1\n\nRecommendation:\n\nMove to latest Microsoft.Identity.Client. See https://aka.ms/msal/LTS for details.\nRemove Microsoft.Identity.Client, and replace with new package Microsoft.Identity.Client, 4.92.0",
+            "protectedSnippet": "Microsoft.Identity.Client, 4.21.1\n\nRecommendation:\n\nMove to latest Microsoft.Identity.Client. See https://aka.ms/msal/LTS for details.\nRemove Microsoft.Identity.Client, and replace with new package Microsoft.Identity.Client, 4.92.0",
+            "label": "Microsoft.Identity.Client 4.21.1",
+            "properties": {
+              "PackageId": "Microsoft.Identity.Client",
+              "PackageVersion": "4.21.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "1355dbd6-d12f-43bf-99d6-48f375424bb8",
+          "ruleId": "NuGet.0005",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable, 10.0.14",
+              "protected": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable, 10.0.14"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable, 10.0.14",
+            "protectedSnippet": "System.Collections.Immutable, 1.7.1\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Collections.Immutable, and replace with new package System.Collections.Immutable, 10.0.14",
+            "label": "System.Collections.Immutable 1.7.1",
+            "properties": {
+              "PackageId": "System.Collections.Immutable",
+              "PackageVersion": "1.7.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "3553bc99-daa4-4b5b-b59a-07b208b6509b",
+          "ruleId": "Project.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "ContosoUniversity.csproj"
+          }
+        },
+        {
+          "incidentId": "e863bb3f-b02b-4be1-ac4e-4433d42a766d",
+          "ruleId": "Project.0002",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+              "protected": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "ContosoUniversity.csproj",
+            "snippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": ".NETFramework,Version=v4.8",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "811d6578-c334-41dc-ac1d-0025c37c8969",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Students/Edit.cshtml"
+          }
+        },
+        {
+          "incidentId": "d723b391-adbf-43ae-bd54-3e92236480cd",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Students/Create.cshtml"
+          }
+        },
+        {
+          "incidentId": "2749c929-68c5-4d9d-8078-8df5a6faa97b",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Courses/Edit.cshtml"
+          }
+        },
+        {
+          "incidentId": "cc65fc7d-a837-40bd-89da-1ae7462581ac",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Courses/Create.cshtml"
+          }
+        },
+        {
+          "incidentId": "98165105-68e9-4461-ae00-6bf83a3b5a7e",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Departments/Edit.cshtml"
+          }
+        },
+        {
+          "incidentId": "7219afaf-b1d5-4c8a-87ac-9c7c641cc831",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Departments/Create.cshtml"
+          }
+        },
+        {
+          "incidentId": "84b550b1-82a4-4d63-90e5-f48f8c9260ab",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Shared/_Layout.cshtml"
+          }
+        },
+        {
+          "incidentId": "9c0b4a47-67c9-42ec-984a-509fd761de7a",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Instructors/Edit.cshtml"
+          }
+        },
+        {
+          "incidentId": "3ee94e20-1c7f-4eca-82d4-1359537d50ac",
+          "ruleId": "Feature.0001",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Views/Instructors/Create.cshtml"
+          }
+        },
+        {
+          "incidentId": "4654ed31-9437-4904-993a-9ef45bca3fa2",
+          "ruleId": "Feature.1000",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "Global.asax.cs"
+          }
+        },
+        {
+          "incidentId": "36efde2e-9758-44bb-8812-52d0d9065fa1",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for Newtonsoft.Json targets 13.0.0.0 but auto-generation would target 13.0.3 (MSB3836 conflict)",
+              "protected": "Manual redirect for Newtonsoft.Json targets 13.0.0.0 but auto-generation would target 13.0.3 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for Newtonsoft.Json targets 13.0.0.0 but auto-generation would target 13.0.3 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for Newtonsoft.Json targets 13.0.0.0 but auto-generation would target 13.0.3 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "Newtonsoft.Json",
+              "AssemblyCurrentVersion": "13.0.0.0",
+              "AssemblyNewVersion": "13.0.3"
+            }
+          }
+        },
+        {
+          "incidentId": "4f5974e7-4c20-470f-9ded-0bdbb55069e3",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but auto-generation would target 4.5.4 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Threading.Tasks.Extensions",
+              "AssemblyCurrentVersion": "4.2.0.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        },
+        {
+          "incidentId": "2b1349ad-f9c1-4b06-ae45-17b776c2171d",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.ComponentModel.Annotations targets 4.2.1.0 but auto-generation would target 4.7.0 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.ComponentModel.Annotations targets 4.2.1.0 but auto-generation would target 4.7.0 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for System.ComponentModel.Annotations targets 4.2.1.0 but auto-generation would target 4.7.0 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.ComponentModel.Annotations targets 4.2.1.0 but auto-generation would target 4.7.0 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.ComponentModel.Annotations",
+              "AssemblyCurrentVersion": "4.2.1.0",
+              "AssemblyNewVersion": "4.7.0"
+            }
+          }
+        },
+        {
+          "incidentId": "01c06184-053f-4bee-aeee-8e60b9983936",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but auto-generation would target 4.5.3 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but auto-generation would target 4.5.3 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but auto-generation would target 4.5.3 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but auto-generation would target 4.5.3 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Runtime.CompilerServices.Unsafe",
+              "AssemblyCurrentVersion": "4.0.6.0",
+              "AssemblyNewVersion": "4.5.3"
+            }
+          }
+        },
+        {
+          "incidentId": "588be962-8f61-40c3-9600-346396dc1e64",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Memory",
+              "AssemblyCurrentVersion": "4.0.1.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        },
+        {
+          "incidentId": "51af3f31-28f5-4202-829d-e22ffe21ad21",
+          "ruleId": "Binding.0006",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but auto-generation would target 2.1.4 (MSB3836 conflict)",
+              "protected": "Manual redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but auto-generation would target 2.1.4 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Manual redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but auto-generation would target 2.1.4 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but auto-generation would target 2.1.4 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "Microsoft.Data.SqlClient",
+              "AssemblyCurrentVersion": "2.0.20168.4",
+              "AssemblyNewVersion": "2.1.4"
+            }
+          }
+        },
+        {
+          "incidentId": "8891eb54-9956-4383-98d4-72b75b5f8b68",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but package provides 2.1.4",
+              "protected": "Binding redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but package provides 2.1.4"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but package provides 2.1.4",
+            "protectedSnippet": "Binding redirect for Microsoft.Data.SqlClient targets 2.0.20168.4 but package provides 2.1.4",
+            "properties": {
+              "AssemblyName": "Microsoft.Data.SqlClient",
+              "AssemblyCurrentVersion": "2.0.20168.4",
+              "AssemblyNewVersion": "2.1.4"
+            }
+          }
+        },
+        {
+          "incidentId": "66791515-5cdf-4f26-a373-9b5bc8643ea7",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for Newtonsoft.Json targets 13.0.0.0 but package provides 13.0.3",
+              "protected": "Binding redirect for Newtonsoft.Json targets 13.0.0.0 but package provides 13.0.3"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for Newtonsoft.Json targets 13.0.0.0 but package provides 13.0.3",
+            "protectedSnippet": "Binding redirect for Newtonsoft.Json targets 13.0.0.0 but package provides 13.0.3",
+            "properties": {
+              "AssemblyName": "Newtonsoft.Json",
+              "AssemblyCurrentVersion": "13.0.0.0",
+              "AssemblyNewVersion": "13.0.3"
+            }
+          }
+        },
+        {
+          "incidentId": "7bca42c9-69d0-4cac-b6e3-501cc2840286",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.ComponentModel.Annotations targets 4.2.1.0 but package provides 4.7.0",
+              "protected": "Binding redirect for System.ComponentModel.Annotations targets 4.2.1.0 but package provides 4.7.0"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for System.ComponentModel.Annotations targets 4.2.1.0 but package provides 4.7.0",
+            "protectedSnippet": "Binding redirect for System.ComponentModel.Annotations targets 4.2.1.0 but package provides 4.7.0",
+            "properties": {
+              "AssemblyName": "System.ComponentModel.Annotations",
+              "AssemblyCurrentVersion": "4.2.1.0",
+              "AssemblyNewVersion": "4.7.0"
+            }
+          }
+        },
+        {
+          "incidentId": "391097bb-ca94-408b-9479-bd895286f897",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+              "protected": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+            "protectedSnippet": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+            "properties": {
+              "AssemblyName": "System.Memory",
+              "AssemblyCurrentVersion": "4.0.1.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        },
+        {
+          "incidentId": "6864a310-99d4-407a-bbe5-91ad070b54ef",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but package provides 4.5.3",
+              "protected": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but package provides 4.5.3"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but package provides 4.5.3",
+            "protectedSnippet": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.6.0 but package provides 4.5.3",
+            "properties": {
+              "AssemblyName": "System.Runtime.CompilerServices.Unsafe",
+              "AssemblyCurrentVersion": "4.0.6.0",
+              "AssemblyNewVersion": "4.5.3"
+            }
+          }
+        },
+        {
+          "incidentId": "eccd2f6e-8a3f-4162-8b7f-9dc2090d38be",
+          "ruleId": "Binding.0007",
+          "projectPath": "ContosoUniversity.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but package provides 4.5.4",
+              "protected": "Binding redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but package provides 4.5.4"
+            },
+            "kind": "File",
+            "path": "Web.config",
+            "snippet": "Binding redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but package provides 4.5.4",
+            "protectedSnippet": "Binding redirect for System.Threading.Tasks.Extensions targets 4.2.0.1 but package provides 4.5.4",
+            "properties": {
+              "AssemblyName": "System.Threading.Tasks.Extensions",
+              "AssemblyCurrentVersion": "4.2.0.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0003": {
+      "id": "NuGet.0003",
+      "isFeature": false,
+      "description": "NuGet package functionality is included with framework reference.\n\nPackage needs to be removed.",
+      "label": "NuGet package functionality is included with framework reference",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262609",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0001": {
+      "id": "NuGet.0001",
+      "isFeature": false,
+      "description": "NuGet package is incompatible with selected target framework.\n\nPackage needs to be upgraded to a version supporting selected project target framework. If there no new package versions supporting new target framework, different package needs to be used and all code needs to be upgraded to new API.",
+      "label": "NuGet package is incompatible",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262529",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet package is deprecated.\n\nGo to its documentation and if there is a guidance for replacement of functionality provided by this package.",
+      "label": "NuGet package is deprecated",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0004": {
+      "id": "NuGet.0004",
+      "isFeature": false,
+      "description": "NuGet package contains security vulnerabilities.\n\nPackage needs to be upgraded to a newer version that addresses known security vulnerabilities.",
+      "label": "NuGet package contains security vulnerability",
+      "severity": "Optional",
+      "effort": 1
+    },
+    "Project.0001": {
+      "id": "Project.0001",
+      "isFeature": false,
+      "description": "Project file needs to be converted to SDK-style. Modern .NET framework projects require a change in the project file format and use SDK corresponding to project flavor and functionality.",
+      "label": "Project file needs to be converted to SDK-style",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Feature.0001": {
+      "id": "Feature.0001",
+      "isFeature": true,
+      "description": "System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files.",
+      "label": "System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        }
+      ]
+    },
+    "Feature.1000": {
+      "id": "Feature.1000",
+      "isFeature": true,
+      "description": "Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs.",
+      "label": "Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        }
+      ]
+    },
+    "Binding.0006": {
+      "id": "Binding.0006",
+      "isFeature": false,
+      "description": "An explicit binding redirect targets a different version than what auto-generation would produce. MSBuild will throw MSB3836 conflict error because it cannot determine which redirect wins.",
+      "label": "Manual redirect conflicts with auto-generated version",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Assembly binding redirection",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262689",
+          "isCustom": false
+        }
+      ]
+    },
+    "Binding.0007": {
+      "id": "Binding.0007",
+      "isFeature": false,
+      "description": "A binding redirect\u0027s newVersion is lower than the version provided by the NuGet package. This forced downgrade usually causes a load failure at runtime because the expected assembly version is not available.",
+      "label": "Binding redirect forces version downgrade",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Assembly binding redirection",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262689",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
