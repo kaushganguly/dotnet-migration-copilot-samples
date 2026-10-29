@@ -95,10 +95,10 @@
             <h4>Quick Test</h4>
             <p>To test the notification system, try performing any of the following operations:</p>
             <ul>
-                <li>@Html.ActionLink("Create a new student", "Create", "Students", null, new { @class = "btn btn-sm btn-primary" })</li>
-                <li>@Html.ActionLink("Create a new course", "Create", "Courses", null, new { @class = "btn btn-sm btn-success" })</li>
-                <li>@Html.ActionLink("Create a new instructor", "Create", "Instructors", null, new { @class = "btn btn-sm btn-warning" })</li>
-                <li>@Html.ActionLink("Create a new department", "Create", "Departments", null, new { @class = "btn btn-sm btn-info" })</li>
+                <li><a asp-controller="Students" asp-action="Create" class="btn btn-sm btn-primary">Create a new student</a></li>
+                <li><a asp-controller="Courses" asp-action="Create" class="btn btn-sm btn-success">Create a new course</a></li>
+                <li><a asp-controller="Instructors" asp-action="Create" class="btn btn-sm btn-warning">Create a new instructor</a></li>
+                <li><a asp-controller="Departments" asp-action="Create" class="btn btn-sm btn-info">Create a new department</a></li>
             </ul>
             <p class="text-muted">After creating, editing, or deleting any entity, you should see a notification appear in the top-right corner of your screen.</p>
         </div>

@@ -7,7 +7,7 @@
 <h2>Courses</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
 <table class="table">
@@ -55,11 +55,11 @@
             }
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id=item.CourseID }, new { @class = "btn btn-info btn-sm" })
+            <a asp-action="Details" asp-route-id="@(item.CourseID)" class="btn btn-info btn-sm">Details</a>
             @Html.Raw(" | ")
-            @Html.ActionLink("Edit", "Edit", new { id=item.CourseID }, new { @class = "btn btn-warning btn-sm" })
+            <a asp-action="Edit" asp-route-id="@(item.CourseID)" class="btn btn-warning btn-sm">Edit</a>
             @Html.Raw(" | ")
-            @Html.ActionLink("Delete", "Delete", new { id=item.CourseID }, new { @class = "btn btn-danger btn-sm" })
+            <a asp-action="Delete" asp-route-id="@(item.CourseID)" class="btn btn-danger btn-sm">Delete</a>
         </td>
     </tr>
 }

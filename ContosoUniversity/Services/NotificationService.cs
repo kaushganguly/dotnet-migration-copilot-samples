@@ -1,34 +1,45 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using Experimental.System.Messaging;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IConfiguration configuration)
         {
             // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
+            _queuePath = configuration["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
+
+            try
             {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                // Ensure the queue exists
+                if (!MessageQueue.Exists(_queuePath))
+                {
+                    _queue = MessageQueue.Create(_queuePath);
+                    _queue.SetPermissions(new MessageQueueAccessControlEntry(new Trustee("Everyone"), MessageQueueAccessRights.FullControl));
+                }
+                else
+                {
+                    _queue = new MessageQueue(_queuePath);
+                }
+
+                // Configure queue formatter
+                _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             }
-            else
+            catch (Exception ex)
             {
-                _queue = new MessageQueue(_queuePath);
+                // MSMQ may be unavailable (e.g. feature not installed, or running on a
+                // non-Windows host). Degrade gracefully instead of taking down every page:
+                // notifications become a no-op rather than a fatal startup/DI error.
+                _queue = null;
+                System.Diagnostics.Debug.WriteLine($"Notification queue unavailable, notifications disabled: {ex.Message}");
             }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
@@ -38,6 +49,12 @@ namespace ContosoUniversity.Services
 
         public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
         {
+            if (_queue == null)
+            {
+                // Notification queue unavailable; silently skip (degraded mode).
+                return;
+            }
+
             try
             {
                 var notification = new Notification
@@ -69,6 +86,11 @@ namespace ContosoUniversity.Services
 
         public Notification ReceiveNotification()
         {
+            if (_queue == null)
+            {
+                return null;
+            }
+
             try
             {
                 var message = _queue.Receive(TimeSpan.FromSeconds(1));
