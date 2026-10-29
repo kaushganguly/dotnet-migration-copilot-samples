@@ -29,6 +29,12 @@
 
 ## Decisions
 - Task was explicitly scoped by the user with TaskId 001-upgrade-dotnet-to-net10 and full requirements provided up front, so pre-initialization confirmation was skipped per Automatic-mode rule (all required parameters already known).
+- MSMQ replacement package: `Experimental.System.Messaging` 1.2.0 (actual root namespace is `Experimental.System.Messaging`, not `System.Messaging` as the package name implies). `MessageQueue.SetPermissions` only has `(MessageQueueAccessControlEntry)`/`(AccessControlList)` overloads, not the old 2-arg form.
+- `NotificationService` MSMQ initialization wrapped in try/catch so the app degrades gracefully (no-op notifications) when MSMQ is unavailable, instead of crashing every page via `BaseController`'s eager DI construction. This is a resilience improvement over the original (which had the same latent fragility), not a behavior change on the success path.
+- Static asset bundling (`System.Web.Optimization`) replaced with CDN-hosted Bootstrap 5.3.3 + direct `<link>`/`<script>` tags, since no local `bootstrap.css` ever existed in the repo (pre-existing dead bundle reference).
+- All `Html.ActionLink` HtmlHelper calls (55 occurrences / 21 views) converted to `<a asp-*>` TagHelper syntax after discovering a silent ASP.NET Core overload-resolution difference vs. MVC5 that leaked CSS classes into query strings. `Html.BeginForm()` calls left as-is (unambiguous overloads, verified safe).
+- LocalDB/MSMQ are unavailable in this Linux execution sandbox; validated the migration via a temporary EF Core InMemory provider swap for smoke testing only — this was fully reverted before considering the task done. Recommend the user run final verification against a real SQL Server + MSMQ-enabled (Windows) environment before production deployment.
+- No test projects exist in the solution; `passUnitTests=true` success criterion is vacuously satisfied (no tests to run).
 
 ## Upgrade Options
 
