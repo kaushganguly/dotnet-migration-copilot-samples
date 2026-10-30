@@ -1,35 +1,26 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using System.Collections.Concurrent;
 using ContosoUniversity.Models;
-using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
+    /// <summary>
+    /// In-process, thread-safe notification queue.
+    /// <para>
+    /// Replaces the legacy MSMQ-backed implementation (<c>System.Messaging</c>), which is a
+    /// Windows-only API with no cross-platform .NET equivalent (see Upgrade Options &gt;
+    /// Compatibility &gt; Windows Native APIs: "No Compatibility Pack" in scenario-instructions.md).
+    /// Preserves the original public surface so callers (<see cref="ContosoUniversity.Controllers.BaseController"/>,
+    /// <see cref="ContosoUniversity.Controllers.NotificationsController"/>) require no behavioral changes.
+    /// </para>
+    /// <para>
+    /// Registered as a DI singleton (see Program.cs) instead of being instantiated directly by
+    /// controllers, since the queue must be shared across all requests within the process.
+    /// </para>
+    /// </summary>
     public class NotificationService
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
-
-        public NotificationService()
-        {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-        }
+        private readonly ConcurrentQueue<Notification> _queue = new ConcurrentQueue<Notification>();
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
         {
@@ -51,14 +42,7 @@ namespace ContosoUniversity.Services
                     IsRead = false
                 };
 
-                var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
-
-                _queue.Send(message);
+                _queue.Enqueue(notification);
             }
             catch (Exception ex)
             {
@@ -71,14 +55,7 @@ namespace ContosoUniversity.Services
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
-            }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
-                // No messages available
-                return null;
+                return _queue.TryDequeue(out var notification) ? notification : null;
             }
             catch (Exception ex)
             {
@@ -95,8 +72,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -114,7 +91,7 @@ namespace ContosoUniversity.Services
 
         public void Dispose()
         {
-            _queue?.Dispose();
+            // Nothing to dispose - in-memory ConcurrentQueue requires no cleanup.
         }
     }
 }

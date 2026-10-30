@@ -1,19 +1,20 @@
 using System;
-using System.Web.Mvc;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
 using ContosoUniversity.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected SchoolContext db;
-        protected NotificationService notificationService = new NotificationService();
+        protected readonly SchoolContext db;
+        protected readonly NotificationService notificationService;
 
-        public BaseController()
+        protected BaseController(SchoolContext db, NotificationService notificationService)
         {
-            db = SchoolContextFactory.Create();
+            this.db = db;
+            this.notificationService = notificationService;
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)
@@ -40,7 +41,7 @@ namespace ContosoUniversity.Controllers
             if (disposing)
             {
                 db?.Dispose();
-                notificationService?.Dispose();
+                // notificationService is a DI singleton - its lifetime is managed by the container, not disposed per-request.
             }
             base.Dispose(disposing);
         }
