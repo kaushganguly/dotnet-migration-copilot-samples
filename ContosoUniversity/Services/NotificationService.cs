@@ -1,21 +1,21 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using MSMQ.Messaging;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IOptions<MessageQueueOptions> options)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
+            // Get queue path from configuration (appsettings.json) or use default
+            _queuePath = options?.Value?.QueuePath ?? @".\Private$\ContosoUniversityNotifications";
+
             // Ensure the queue exists
             if (!MessageQueue.Exists(_queuePath))
             {
@@ -26,7 +26,7 @@ namespace ContosoUniversity.Services
             {
                 _queue = new MessageQueue(_queuePath);
             }
-            
+
             // Configure queue formatter
             _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
@@ -95,8 +95,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
