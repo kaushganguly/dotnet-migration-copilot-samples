@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using ContosoUniversity.Data;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
 
@@ -8,20 +9,25 @@ namespace ContosoUniversity.Controllers
 {
     public class NotificationsController : BaseController
     {
+        public NotificationsController(SchoolContext context, NotificationService notificationService)
+            : base(context, notificationService)
+        {
+        }
+
         // GET: api/notifications - Get pending notifications for admin
         [HttpGet]
         public JsonResult GetNotifications()
         {
             var notifications = new List<Notification>();
-            
+
             try
             {
                 // Read all available notifications from the queue
-                Notification notification;
+                Notification? notification;
                 while ((notification = notificationService.ReceiveNotification()) != null)
                 {
                     notifications.Add(notification);
-                    
+
                     // Limit to prevent overwhelming the UI
                     if (notifications.Count >= 10)
                         break;
@@ -30,14 +36,16 @@ namespace ContosoUniversity.Controllers
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error retrieving notifications: {ex.Message}");
-                return Json(new { success = false, message = "Error retrieving notifications" }, JsonRequestBehavior.AllowGet);
+                // ASP.NET Core's Json() allows GET responses by default, unlike ASP.NET MVC 5
+                // which required JsonRequestBehavior.AllowGet to be specified explicitly.
+                return Json(new { success = false, message = "Error retrieving notifications" });
             }
 
-            return Json(new { 
-                success = true, 
+            return Json(new {
+                success = true,
                 notifications = notifications,
-                count = notifications.Count 
-            }, JsonRequestBehavior.AllowGet);
+                count = notifications.Count
+            });
         }
 
         // POST: api/notifications/mark-read

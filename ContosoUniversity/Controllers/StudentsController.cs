@@ -1,16 +1,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Services;
 using System.Diagnostics;
 
 namespace ContosoUniversity.Controllers
 {
     public class StudentsController : BaseController
     {
+        public StudentsController(SchoolContext context, NotificationService notificationService)
+            : base(context, notificationService)
+        {
+        }
+
         // GET: Students - Admins and Teachers can view
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -31,13 +36,13 @@ namespace ContosoUniversity.Controllers
 
             var students = from s in db.Students
                            select s;
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 students = students.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstMidName.Contains(searchString));
             }
-            
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -64,7 +69,7 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
             Student student = db.Students
                 .Include(s => s.Enrollments)
@@ -72,7 +77,7 @@ namespace ContosoUniversity.Controllers
                 .Where(s => s.ID == id).Single();
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
@@ -90,7 +95,7 @@ namespace ContosoUniversity.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LastName,FirstMidName,EnrollmentDate")] Student student)
+        public ActionResult Create([Bind("LastName,FirstMidName,EnrollmentDate")] Student student)
         {
             try
             {
@@ -110,11 +115,11 @@ namespace ContosoUniversity.Controllers
                 {
                     db.Students.Add(student);
                     db.SaveChanges();
-                    
+
                     // Send notification for student creation
                     var studentName = $"{student.FirstMidName} {student.LastName}";
                     SendEntityNotification("Student", student.ID.ToString(), studentName, EntityOperation.CREATE);
-                    
+
                     return RedirectToAction("Index");
                 }
             }
@@ -131,12 +136,12 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
-            Student student = db.Students.Find(id);
+            Student? student = db.Students.Find(id);
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
@@ -144,7 +149,7 @@ namespace ContosoUniversity.Controllers
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LastName,FirstMidName,EnrollmentDate")] Student student)
+        public ActionResult Edit([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student)
         {
             try
             {
@@ -164,11 +169,11 @@ namespace ContosoUniversity.Controllers
                 {
                     db.Entry(student).State = EntityState.Modified;
                     db.SaveChanges();
-                    
+
                     // Send notification for student update
                     var studentName = $"{student.FirstMidName} {student.LastName}";
                     SendEntityNotification("Student", student.ID.ToString(), studentName, EntityOperation.UPDATE);
-                    
+
                     return RedirectToAction("Index");
                 }
             }
@@ -185,12 +190,12 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
-            Student student = db.Students.Find(id);
+            Student? student = db.Students.Find(id);
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
@@ -202,14 +207,18 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                Student student = db.Students.Find(id);
+                Student? student = db.Students.Find(id);
+                if (student == null)
+                {
+                    return NotFound();
+                }
                 var studentName = $"{student.FirstMidName} {student.LastName}";
                 db.Students.Remove(student);
                 db.SaveChanges();
-                
+
                 // Send notification for student deletion
                 SendEntityNotification("Student", id.ToString(), studentName, EntityOperation.DELETE);
-                
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -218,15 +227,6 @@ namespace ContosoUniversity.Controllers
                 TempData["ErrorMessage"] = "Unable to delete the student. Try again, and if the problem persists see your system administrator.";
                 return RedirectToAction("Index");
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Base class will dispose db and notificationService
-            }
-            base.Dispose(disposing);
         }
     }
 }
