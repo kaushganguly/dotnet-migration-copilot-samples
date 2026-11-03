@@ -1,34 +1,45 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using MSMQ.Messaging;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Models;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
-        private readonly MessageQueue _queue;
+        private MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IConfiguration configuration)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
+            // Get queue path from configuration or use default. The underlying MSMQ queue is opened
+            // lazily (see EnsureQueue) so that constructing this service does not fail on hosts where
+            // Message Queuing (a Windows-only OS feature) is not installed/available; only the
+            // notification-specific operations require it.
+            _queuePath = configuration?["MessageQueue:QueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
+        }
+
+        private MessageQueue EnsureQueue()
+        {
+            if (_queue == null)
             {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                // Ensure the queue exists
+                if (!MessageQueue.Exists(_queuePath))
+                {
+                    _queue = MessageQueue.Create(_queuePath);
+                    _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                }
+                else
+                {
+                    _queue = new MessageQueue(_queuePath);
+                }
+
+                // Configure queue formatter
+                _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
+
+            return _queue;
         }
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
@@ -58,7 +69,7 @@ namespace ContosoUniversity.Services
                     Priority = MessagePriority.Normal
                 };
 
-                _queue.Send(message);
+                EnsureQueue().Send(message);
             }
             catch (Exception ex)
             {
@@ -71,7 +82,7 @@ namespace ContosoUniversity.Services
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
+                var message = EnsureQueue().Receive(TimeSpan.FromSeconds(1));
                 var jsonContent = message.Body.ToString();
                 return JsonConvert.DeserializeObject<Notification>(jsonContent);
             }
