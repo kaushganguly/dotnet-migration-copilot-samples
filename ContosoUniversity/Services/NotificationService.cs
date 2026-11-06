@@ -1,21 +1,28 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using MSMQ.Messaging;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    /// <summary>
+    /// Sends and receives entity-change notifications over an MSMQ queue.
+    /// Migrated from System.Messaging to the MSMQ.Messaging NuGet package (drop-in
+    /// replacement with an identical API surface) as part of the ASP.NET Core migration.
+    /// MSMQ itself remains a Windows-only technology; this service will throw
+    /// PlatformNotSupportedException at runtime on non-Windows hosts, matching the
+    /// pre-migration behavior (MSMQ was always Windows-only).
+    /// </summary>
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IOptions<Options.MessageQueueOptions> options)
         {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
+            _queuePath = options?.Value?.Path ?? @".\Private$\ContosoUniversityNotifications";
+
             // Ensure the queue exists
             if (!MessageQueue.Exists(_queuePath))
             {
@@ -26,7 +33,7 @@ namespace ContosoUniversity.Services
             {
                 _queue = new MessageQueue(_queuePath);
             }
-            
+
             // Configure queue formatter
             _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
@@ -95,8 +102,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -115,6 +122,7 @@ namespace ContosoUniversity.Services
         public void Dispose()
         {
             _queue?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
