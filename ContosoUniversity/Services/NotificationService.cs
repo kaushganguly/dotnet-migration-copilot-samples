@@ -1,21 +1,20 @@
-using System;
-using System.Messaging;
-using System.Configuration;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Configuration;
+using MSMQ.Messaging;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
         private readonly MessageQueue _queue;
 
-        public NotificationService()
+        public NotificationService(IConfiguration configuration)
         {
             // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
+            _queuePath = configuration["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
+
             // Ensure the queue exists
             if (!MessageQueue.Exists(_queuePath))
             {
@@ -26,17 +25,17 @@ namespace ContosoUniversity.Services
             {
                 _queue = new MessageQueue(_queuePath);
             }
-            
+
             // Configure queue formatter
             _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
 
-        public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, EntityOperation operation, string? userName = null)
         {
             SendNotification(entityType, entityId, null, operation, userName);
         }
 
-        public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, string? entityDisplayName, EntityOperation operation, string? userName = null)
         {
             try
             {
@@ -67,13 +66,13 @@ namespace ContosoUniversity.Services
             }
         }
 
-        public Notification ReceiveNotification()
+        public Notification? ReceiveNotification()
         {
             try
             {
                 var message = _queue.Receive(TimeSpan.FromSeconds(1));
                 var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
+                return JsonConvert.DeserializeObject<Notification>(jsonContent ?? string.Empty);
             }
             catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
             {
@@ -93,10 +92,10 @@ namespace ContosoUniversity.Services
             // for persistence and tracking read status
         }
 
-        private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
+        private string GenerateMessage(string entityType, string entityId, string? entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -115,6 +114,7 @@ namespace ContosoUniversity.Services
         public void Dispose()
         {
             _queue?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

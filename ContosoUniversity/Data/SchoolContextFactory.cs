@@ -1,16 +1,26 @@
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace ContosoUniversity.Data
 {
-    public static class SchoolContextFactory
+    /// <summary>
+    /// Used by EF Core design-time tooling (e.g. `dotnet ef migrations`) to create a
+    /// <see cref="SchoolContext"/> outside of the application's normal DI container, since
+    /// design-time tooling does not run through <c>Program.cs</c>.
+    /// </summary>
+    public class SchoolContextFactory : IDesignTimeDbContextFactory<SchoolContext>
     {
-        public static SchoolContext Create()
+        public SchoolContext CreateDbContext(string[] args)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
             var optionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-            
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
             return new SchoolContext(optionsBuilder.Options);
         }
     }
