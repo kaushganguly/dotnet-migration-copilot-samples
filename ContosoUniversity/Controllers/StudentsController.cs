@@ -1,18 +1,24 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Services;
 using System.Diagnostics;
+using ContosoUniversity; // PaginatedList<T>
 
 namespace ContosoUniversity.Controllers
 {
     public class StudentsController : BaseController
     {
+        public StudentsController(SchoolContext context, NotificationService notificationService)
+            : base(context, notificationService)
+        {
+        }
+
         // GET: Students - Admins and Teachers can view
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -31,13 +37,13 @@ namespace ContosoUniversity.Controllers
 
             var students = from s in db.Students
                            select s;
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 students = students.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstMidName.Contains(searchString));
             }
-            
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -60,11 +66,11 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Students/Details/5 - Admins and Teachers can view details
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
             Student student = db.Students
                 .Include(s => s.Enrollments)
@@ -72,13 +78,13 @@ namespace ContosoUniversity.Controllers
                 .Where(s => s.ID == id).Single();
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
 
         // GET: Students/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             var student = new Student
             {
@@ -90,7 +96,7 @@ namespace ContosoUniversity.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LastName,FirstMidName,EnrollmentDate")] Student student)
+        public IActionResult Create([Bind("LastName,FirstMidName,EnrollmentDate")] Student student)
         {
             try
             {
@@ -110,11 +116,11 @@ namespace ContosoUniversity.Controllers
                 {
                     db.Students.Add(student);
                     db.SaveChanges();
-                    
+
                     // Send notification for student creation
                     var studentName = $"{student.FirstMidName} {student.LastName}";
                     SendEntityNotification("Student", student.ID.ToString(), studentName, EntityOperation.CREATE);
-                    
+
                     return RedirectToAction("Index");
                 }
             }
@@ -127,16 +133,16 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
             Student student = db.Students.Find(id);
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
@@ -144,7 +150,7 @@ namespace ContosoUniversity.Controllers
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LastName,FirstMidName,EnrollmentDate")] Student student)
+        public IActionResult Edit([Bind("ID,LastName,FirstMidName,EnrollmentDate")] Student student)
         {
             try
             {
@@ -164,11 +170,11 @@ namespace ContosoUniversity.Controllers
                 {
                     db.Entry(student).State = EntityState.Modified;
                     db.SaveChanges();
-                    
+
                     // Send notification for student update
                     var studentName = $"{student.FirstMidName} {student.LastName}";
                     SendEntityNotification("Student", student.ID.ToString(), studentName, EntityOperation.UPDATE);
-                    
+
                     return RedirectToAction("Index");
                 }
             }
@@ -181,16 +187,16 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
             Student student = db.Students.Find(id);
             if (student == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(student);
         }
@@ -198,7 +204,7 @@ namespace ContosoUniversity.Controllers
         // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             try
             {
@@ -206,10 +212,10 @@ namespace ContosoUniversity.Controllers
                 var studentName = $"{student.FirstMidName} {student.LastName}";
                 db.Students.Remove(student);
                 db.SaveChanges();
-                
+
                 // Send notification for student deletion
                 SendEntityNotification("Student", id.ToString(), studentName, EntityOperation.DELETE);
-                
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -218,15 +224,6 @@ namespace ContosoUniversity.Controllers
                 TempData["ErrorMessage"] = "Unable to delete the student. Try again, and if the problem persists see your system administrator.";
                 return RedirectToAction("Index");
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Base class will dispose db and notificationService
-            }
-            base.Dispose(disposing);
         }
     }
 }

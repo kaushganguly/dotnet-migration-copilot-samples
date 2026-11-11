@@ -3,7 +3,12 @@
   "operationId": "d27f3b47-798e-4216-ab77-50fae33cd04d",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-11-11T08:35:36.3165522Z",
-  "lastUpdateTime": "2026-11-11T08:35:36.4106905Z",
-  "properties": {},
+  "lastUpdateTime": "2026-11-11T08:55:54.7738735Z",
+  "properties": {
+    "UpgradeTargetFramework": "net10.0",
+    "taskStates": {
+      "02-dotnet10-aspnetcore-migration": "Completed"
+    }
+  },
   "folderPath": ""
 }
