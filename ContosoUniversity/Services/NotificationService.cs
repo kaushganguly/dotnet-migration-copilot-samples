@@ -1,35 +1,22 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using System.Collections.Concurrent;
 using ContosoUniversity.Models;
-using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    /// <summary>
+    /// Cross-platform, in-process replacement for the original MSMQ-backed notification queue.
+    /// MSMQ (System.Messaging) is Windows-only and has no implementation on .NET Core/.NET 5+ or on
+    /// Linux, so it cannot be used by this application after the ASP.NET Core migration. This
+    /// implementation preserves the original public surface
+    /// (SendNotification/ReceiveNotification/MarkAsRead) used by BaseController and
+    /// NotificationsController, backed by a thread-safe in-memory queue instead of a persistent,
+    /// cross-process MSMQ queue. Registered as a singleton so the queue is shared across requests
+    /// within this process, matching the original "admin notification dashboard" use case.
+    /// </summary>
+    public class NotificationService : INotificationService
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
-
-        public NotificationService()
-        {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-        }
+        private readonly ConcurrentQueue<Notification> _queue = new ConcurrentQueue<Notification>();
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
         {
@@ -51,14 +38,7 @@ namespace ContosoUniversity.Services
                     IsRead = false
                 };
 
-                var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
-
-                _queue.Send(message);
+                _queue.Enqueue(notification);
             }
             catch (Exception ex)
             {
@@ -71,14 +51,7 @@ namespace ContosoUniversity.Services
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
-            }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
-                // No messages available
-                return null;
+                return _queue.TryDequeue(out var notification) ? notification : null;
             }
             catch (Exception ex)
             {
@@ -95,8 +68,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -110,11 +83,6 @@ namespace ContosoUniversity.Services
                 default:
                     return $"{displayText} operation: {operation}";
             }
-        }
-
-        public void Dispose()
-        {
-            _queue?.Dispose();
         }
     }
 }
