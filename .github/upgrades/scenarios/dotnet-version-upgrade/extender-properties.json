@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "updatedUtc": "2026-11-15T08:37:24.2708589Z",
+  "properties": {
+    "UpgradeTargetFramework": "net10.0"
+  }
+}
