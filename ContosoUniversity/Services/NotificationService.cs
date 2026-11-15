@@ -1,42 +1,28 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using System.Collections.Concurrent;
 using ContosoUniversity.Models;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    /// <summary>
+    /// In-process, cross-platform replacement for the original MSMQ-backed notification
+    /// queue (System.Messaging.MessageQueue is Windows-only and has no supported
+    /// equivalent on .NET 10 / Linux). Registered as a singleton so all requests in the
+    /// process share the same queue, mirroring the original single-machine private-queue
+    /// semantics. The public API (method names/signatures) and the JSON message shape are
+    /// preserved so controllers and the admin dashboard are unaffected by the swap.
+    /// </summary>
+    public class NotificationService : IDisposable
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
+        private readonly ConcurrentQueue<string> _queue = new ConcurrentQueue<string>();
 
-        public NotificationService()
-        {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-        }
-
-        public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, EntityOperation operation, string? userName = null)
         {
             SendNotification(entityType, entityId, null, operation, userName);
         }
 
-        public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, string? entityDisplayName, EntityOperation operation, string? userName = null)
         {
             try
             {
@@ -51,14 +37,10 @@ namespace ContosoUniversity.Services
                     IsRead = false
                 };
 
+                // Round-trip through JSON (as the original MSMQ implementation did) so the
+                // wire/message shape stays identical even though the transport changed.
                 var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
-
-                _queue.Send(message);
+                _queue.Enqueue(jsonMessage);
             }
             catch (Exception ex)
             {
@@ -67,16 +49,15 @@ namespace ContosoUniversity.Services
             }
         }
 
-        public Notification ReceiveNotification()
+        public Notification? ReceiveNotification()
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
-            }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
+                if (_queue.TryDequeue(out var jsonContent))
+                {
+                    return JsonConvert.DeserializeObject<Notification>(jsonContent);
+                }
+
                 // No messages available
                 return null;
             }
@@ -93,10 +74,10 @@ namespace ContosoUniversity.Services
             // for persistence and tracking read status
         }
 
-        private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
+        private static string GenerateMessage(string entityType, string entityId, string? entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -114,7 +95,8 @@ namespace ContosoUniversity.Services
 
         public void Dispose()
         {
-            _queue?.Dispose();
+            // Nothing to dispose - the in-memory queue needs no cleanup.
+            GC.SuppressFinalize(this);
         }
     }
 }

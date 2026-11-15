@@ -65,3 +65,39 @@ unaffected. This is a deliberate modernization decision, not a deferred stub.
 
 ### Commit Strategy
 - Single Commit at End — matches All-at-Once strategy recommendation (one atomic upgrade, one commit). Will still commit after each of the 2 plan tasks for traceability since this is a multi-task plan in practice (SDK-style conversion, then Core migration), each independently validated.
+
+## Decisions
+
+### Flow Mode
+- User explicitly requested **Automatic** flow mode for this entire session: run end-to-end, never
+  pause for confirmation/review. Applied throughout.
+
+### MCP task-tracking backend unavailable this session
+- `start_task`, `complete_task`, and `break_down_task` failed consistently throughout this session
+  with "plan.md exists but could not be parsed into tasks ... restore its internal LLM client."
+  `get_state` remained functional. Engineering work for both tasks (01-sdk-style-conversion,
+  02-aspnet-core-migration) was executed directly and fully validated; `tasks.md` was updated
+  manually (bash) to ✅ for both since the tool-driven path was unavailable for the whole session.
+  `tasks/01-sdk-style-conversion/progress-details.md` and
+  `tasks/02-aspnet-core-migration/progress-details.md` document the actual work performed and serve
+  as the record of completion in place of the tool-driven workflow.
+
+### InvariantGlobalization removed
+- `<InvariantGlobalization>true</InvariantGlobalization>` was tried and removed — it is incompatible
+  with `Microsoft.Data.SqlClient` (`SqlConnection.Open()` throws `NotSupportedException`). Any
+  future package work on this project should keep this setting off.
+
+### No automated test project exists
+- Confirmed via full-repo search: no test project anywhere in the solution/repo. `dotnet test`
+  completes cleanly with "no test projects found." `passUnitTests=true` success criterion is
+  satisfied vacuously (nothing to fail).
+
+### LocalDB / sandbox DB limitation, and how runtime was actually validated
+- This Linux sandbox has no SQL Server/LocalDB; `(LocalDb)\MSSQLLocalDB` (the app's original and
+  still-configured connection string) is Windows-only — pre-existing to the original app, not a
+  migration regression. A disposable `mcr.microsoft.com/mssql/server:2022-latest` Docker container
+  was used (connection string supplied only via environment-variable override, no permanent code
+  change) to validate the full request pipeline end-to-end: page rendering with real seeded data
+  across all 6 controllers, and a full `Students/Create` POST (antiforgery + model binding + EF
+  persistence + redirect) with confirmed notification delivery through the MSMQ-replacement
+  in-process queue. Container was removed after the smoke test.
