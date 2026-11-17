@@ -76,17 +76,18 @@ This feature allows administrators to upload images for teaching materials (text
 
 ### Configuration
 
-The following settings in `Web.config` control file upload limits:
-- `maxRequestLength="10240"` (10MB in KB)
-- `maxAllowedContentLength="10485760"` (10MB in bytes)
-- `executionTimeout="3600"` (1 hour timeout for large uploads)
+The following settings in `Program.cs` (Kestrel + form options) control file upload limits,
+preserving the original `Web.config` values:
+- `MaxRequestBodySize = 10_485_760` (10MB in bytes, matches old `maxAllowedContentLength`)
+- `MultipartBodyLengthLimit = 10_485_760` (10MB, matches old `maxRequestLength="10240"`)
+- `KeepAliveTimeout = TimeSpan.FromHours(1)` (matches old `executionTimeout="3600"`)
 
 ## Deployment Considerations
 
 ### Initial Setup
 1. Ensure the `/Uploads/TeachingMaterials/` directory exists on the server
 2. Set appropriate write permissions for the application pool identity
-3. Verify the web.config upload limits are appropriate for your hosting environment
+3. Verify the upload limits configured in `Program.cs` are appropriate for your hosting environment
 
 ### File System Permissions
 The application needs write access to the `/Uploads/TeachingMaterials/` directory:

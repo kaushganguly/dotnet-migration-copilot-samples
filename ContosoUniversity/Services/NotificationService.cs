@@ -1,35 +1,31 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using System.Collections.Concurrent;
 using ContosoUniversity.Models;
-using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
+    /// <summary>
+    /// In-process notification queue.
+    ///
+    /// The original ASP.NET Framework implementation used a private MSMQ queue
+    /// (System.Messaging), which is a Windows-only API with no equivalent in
+    /// .NET 10 / ASP.NET Core (System.Messaging does not exist on .NET 5+, and
+    /// MSMQ itself is Windows-only infrastructure). Since this queue was only
+    /// ever used as a same-process, non-durable hand-off between
+    /// SendNotification (called by BaseController after create/update/delete
+    /// operations) and ReceiveNotification (polled by
+    /// Controllers/NotificationsController.cs, in turn polled by
+    /// Scripts/notifications.js every 5 seconds), it is replaced here with an
+    /// in-memory, thread-safe queue (ConcurrentQueue) registered as a
+    /// singleton service. This preserves the existing public API
+    /// (SendNotification/ReceiveNotification/MarkAsRead) and the existing
+    /// callers unchanged. Notifications are not persisted across app restarts,
+    /// matching the original transient/at-most-delivered-once behavior of a
+    /// freshly created, non-transactional MSMQ queue in this sample.
+    /// </summary>
     public class NotificationService
     {
-        private readonly string _queuePath;
-        private readonly MessageQueue _queue;
-
-        public NotificationService()
-        {
-            // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
-            {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
-            }
-            else
-            {
-                _queue = new MessageQueue(_queuePath);
-            }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-        }
+        private readonly ConcurrentQueue<Notification> _queue = new ConcurrentQueue<Notification>();
 
         public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
         {
@@ -51,14 +47,7 @@ namespace ContosoUniversity.Services
                     IsRead = false
                 };
 
-                var jsonMessage = JsonConvert.SerializeObject(notification);
-                var message = new Message(jsonMessage)
-                {
-                    Label = $"{entityType} {operation}",
-                    Priority = MessagePriority.Normal
-                };
-
-                _queue.Send(message);
+                _queue.Enqueue(notification);
             }
             catch (Exception ex)
             {
@@ -71,14 +60,7 @@ namespace ContosoUniversity.Services
         {
             try
             {
-                var message = _queue.Receive(TimeSpan.FromSeconds(1));
-                var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
-            }
-            catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
-            {
-                // No messages available
-                return null;
+                return _queue.TryDequeue(out var notification) ? notification : null;
             }
             catch (Exception ex)
             {
@@ -95,8 +77,8 @@ namespace ContosoUniversity.Services
 
         private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -114,7 +96,7 @@ namespace ContosoUniversity.Services
 
         public void Dispose()
         {
-            _queue?.Dispose();
+            // No unmanaged resources to release (ConcurrentQueue requires no disposal).
         }
     }
 }

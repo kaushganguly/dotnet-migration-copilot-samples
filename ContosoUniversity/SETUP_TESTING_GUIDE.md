@@ -1,5 +1,11 @@
 # Setup and Testing Guide for Notification System
 
+> **⚠️ Obsolete as of the .NET 10 migration**: The notification system no longer uses MSMQ — it
+> now uses an in-process `ConcurrentQueue<Notification>` singleton (see
+> `Services/NotificationService.cs` and `NOTIFICATION_SYSTEM_README.md`). No MSMQ installation,
+> Windows feature, or queue setup is required anymore. The MSMQ-specific steps below are retained
+> for historical reference only and no longer apply.
+
 ## Prerequisites
 
 1. **Enable MSMQ on Windows**:
