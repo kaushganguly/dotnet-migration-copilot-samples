@@ -1,43 +1,63 @@
 using System;
-using System.Messaging;
-using System.Configuration;
+using MSMQ.Messaging;
 using ContosoUniversity.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace ContosoUniversity.Services
 {
-    public class NotificationService
+    public class NotificationQueueOptions
+    {
+        public string QueuePath { get; set; } = @".\Private$\ContosoUniversityNotifications";
+    }
+
+    public class NotificationService : IDisposable
     {
         private readonly string _queuePath;
-        private readonly MessageQueue _queue;
+        private readonly MessageQueue? _queue;
 
-        public NotificationService()
+        public NotificationService(IOptions<NotificationQueueOptions> options)
         {
             // Get queue path from configuration or use default
-            _queuePath = ConfigurationManager.AppSettings["NotificationQueuePath"] ?? @".\Private$\ContosoUniversityNotifications";
-            
-            // Ensure the queue exists
-            if (!MessageQueue.Exists(_queuePath))
+            _queuePath = options.Value.QueuePath ?? @".\Private$\ContosoUniversityNotifications";
+
+            try
             {
-                _queue = MessageQueue.Create(_queuePath);
-                _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                // Ensure the queue exists
+                if (!MessageQueue.Exists(_queuePath))
+                {
+                    _queue = MessageQueue.Create(_queuePath);
+                    _queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl);
+                }
+                else
+                {
+                    _queue = new MessageQueue(_queuePath);
+                }
+
+                // Configure queue formatter
+                _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             }
-            else
+            catch (Exception ex)
             {
-                _queue = new MessageQueue(_queuePath);
+                // Message Queuing (MSMQ) is a Windows-only feature. If it is not installed/available
+                // (e.g. non-Windows hosts), degrade gracefully instead of breaking every request.
+                _queue = null;
+                System.Diagnostics.Debug.WriteLine($"Notification queue unavailable: {ex.Message}");
             }
-            
-            // Configure queue formatter
-            _queue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
         }
 
-        public void SendNotification(string entityType, string entityId, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, EntityOperation operation, string? userName = null)
         {
             SendNotification(entityType, entityId, null, operation, userName);
         }
 
-        public void SendNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation, string userName = null)
+        public void SendNotification(string entityType, string entityId, string? entityDisplayName, EntityOperation operation, string? userName = null)
         {
+            if (_queue == null)
+            {
+                return;
+            }
+
             try
             {
                 var notification = new Notification
@@ -67,13 +87,18 @@ namespace ContosoUniversity.Services
             }
         }
 
-        public Notification ReceiveNotification()
+        public Notification? ReceiveNotification()
         {
+            if (_queue == null)
+            {
+                return null;
+            }
+
             try
             {
                 var message = _queue.Receive(TimeSpan.FromSeconds(1));
                 var jsonContent = message.Body.ToString();
-                return JsonConvert.DeserializeObject<Notification>(jsonContent);
+                return JsonConvert.DeserializeObject<Notification>(jsonContent ?? string.Empty);
             }
             catch (MessageQueueException ex) when (ex.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
             {
@@ -93,10 +118,10 @@ namespace ContosoUniversity.Services
             // for persistence and tracking read status
         }
 
-        private string GenerateMessage(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
+        private string GenerateMessage(string entityType, string entityId, string? entityDisplayName, EntityOperation operation)
         {
-            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName) 
-                ? $"{entityType} '{entityDisplayName}'" 
+            var displayText = !string.IsNullOrWhiteSpace(entityDisplayName)
+                ? $"{entityType} '{entityDisplayName}'"
                 : $"{entityType} (ID: {entityId})";
 
             switch (operation)
@@ -115,6 +140,7 @@ namespace ContosoUniversity.Services
         public void Dispose()
         {
             _queue?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
