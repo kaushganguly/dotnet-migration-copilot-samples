@@ -1,5 +1,4 @@
-using System;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
 using ContosoUniversity.Data;
@@ -9,11 +8,12 @@ namespace ContosoUniversity.Controllers
     public abstract class BaseController : Controller
     {
         protected SchoolContext db;
-        protected NotificationService notificationService = new NotificationService();
+        protected NotificationService notificationService;
 
-        public BaseController()
+        protected BaseController(SchoolContext db, NotificationService notificationService)
         {
-            db = SchoolContextFactory.Create();
+            this.db = db;
+            this.notificationService = notificationService;
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)
@@ -21,7 +21,7 @@ namespace ContosoUniversity.Controllers
             SendEntityNotification(entityType, entityId, null, operation);
         }
 
-        protected void SendEntityNotification(string entityType, string entityId, string entityDisplayName, EntityOperation operation)
+        protected void SendEntityNotification(string entityType, string entityId, string? entityDisplayName, EntityOperation operation)
         {
             try
             {
@@ -37,11 +37,7 @@ namespace ContosoUniversity.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db?.Dispose();
-                notificationService?.Dispose();
-            }
+            // db and notificationService are DI-managed (Scoped) - the container disposes them.
             base.Dispose(disposing);
         }
     }

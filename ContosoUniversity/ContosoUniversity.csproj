@@ -53,6 +53,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
+    <PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
+    <PackageReference Include="System.Drawing.Common" Version="11.0.0" />
     <PackageReference Include="Modernizr" Version="2.6.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>

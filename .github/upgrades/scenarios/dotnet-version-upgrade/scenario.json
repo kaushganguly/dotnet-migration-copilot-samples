@@ -3,7 +3,12 @@
   "operationId": "d64e6fc1-1118-4fed-baf2-c0d6e720c732",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-11-19T09:39:01.5162592Z",
-  "lastUpdateTime": "2026-11-19T09:39:01.6069824Z",
-  "properties": {},
+  "lastUpdateTime": "2026-11-19T10:05:05.8563897Z",
+  "properties": {
+    "UpgradeTargetFramework": "net10.0",
+    "taskStates": {
+      "02-migrate-aspnet-mvc-to-aspnet-core": "Completed"
+    }
+  },
   "folderPath": ""
 }
